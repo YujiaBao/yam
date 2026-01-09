@@ -9,7 +9,8 @@ import {
   Eye,
   Edit3,
   Bold,
-  Download
+  Download,
+  PanelLeftClose
 } from 'lucide-react';
 import clsx from 'clsx';
 import type { FontType, FontWeight, ViewMode } from '../types';
@@ -28,6 +29,7 @@ interface SidebarProps {
   setViewMode: (mode: ViewMode) => void;
   showSettings: boolean;
   setShowSettings: (show: boolean) => void;
+  onToggleSidebar: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -43,10 +45,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
   viewMode,
   setViewMode,
   showSettings,
-  setShowSettings
+  setShowSettings,
+  onToggleSidebar
 }) => {
   return (
     <aside className="w-16 flex-shrink-0 flex flex-col items-center py-4 border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 z-10 pt-2">
+      {/* Collapse Toggle */}
+      <button
+        onClick={onToggleSidebar}
+        className="mb-2 p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+        title="Collapse Sidebar"
+      >
+        <PanelLeftClose size={20} />
+      </button>
+
       <nav className="flex-1 flex flex-col gap-3 w-full px-2 mt-4">
         {/* File Upload */}
         <label className="p-3 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer transition-colors group relative flex justify-center">

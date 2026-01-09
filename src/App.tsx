@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import {
+  PanelLeft
+} from 'lucide-react';
 import { Sidebar } from './components/Sidebar';
 import { Editor } from './components/Editor';
 import { Preview } from './components/Preview';
@@ -57,6 +60,7 @@ const Greeting = ({ name }: { name: string }) => (
   const [viewMode, setViewMode] = useState<ViewMode>('split');
   const [showSettings, setShowSettings] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   // Custom CSS Themes Hook
   const {
@@ -84,6 +88,9 @@ const Greeting = ({ name }: { name: string }) => (
     if (window.electron && window.electron.onFileOpened) {
       const unsubscribe = window.electron.onFileOpened((content) => {
         setMarkdown(content);
+        // Automatically switch to preview mode and hide sidebar for better reading experience
+        setViewMode('preview');
+        setIsSidebarOpen(false);
       });
       return () => unsubscribe();
     }
@@ -141,24 +148,38 @@ const Greeting = ({ name }: { name: string }) => (
       <style>{activeCss}</style>
 
       {/* Draggable Title Bar Area for macOS */}
-      <div className="h-8 w-full bg-transparent flex-shrink-0 drag-region" style={{ WebkitAppRegion: 'drag' }} />
+      <div className="h-8 w-full bg-transparent flex-shrink-0 drag-region flex items-center px-2" style={{ WebkitAppRegion: 'drag' }}>
+        {!isSidebarOpen && (
+          <button 
+            onClick={() => setIsSidebarOpen(true)}
+            className="p-1 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors ml-16 no-drag z-50"
+            style={{ WebkitAppRegion: 'no-drag' }}
+            title="Show Sidebar"
+          >
+            <PanelLeft size={18} />
+          </button>
+        )}
+      </div>
 
       <div className="flex-1 flex overflow-hidden">
-        <Sidebar 
-          onFileUpload={handleFileUpload}
-          onExportPdf={handleExportPdf}
-          isExporting={isExporting}
-          theme={theme}
-          setTheme={setTheme}
-          font={font}
-          setFont={setFont}
-          fontWeight={fontWeight}
-          setFontWeight={setFontWeight}
-          viewMode={viewMode}
-          setViewMode={setViewMode}
-          showSettings={showSettings}
-          setShowSettings={setShowSettings}
-        />
+        {isSidebarOpen && (
+          <Sidebar 
+            onFileUpload={handleFileUpload}
+            onExportPdf={handleExportPdf}
+            isExporting={isExporting}
+            theme={theme}
+            setTheme={setTheme}
+            font={font}
+            setFont={setFont}
+            fontWeight={fontWeight}
+            setFontWeight={setFontWeight}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+            showSettings={showSettings}
+            setShowSettings={setShowSettings}
+            onToggleSidebar={() => setIsSidebarOpen(false)}
+          />
+        )}
 
         <main className="flex-1 flex overflow-hidden relative">
           <Editor 
