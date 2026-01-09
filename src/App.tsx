@@ -7,7 +7,50 @@ import { useThemes } from './hooks/useThemes';
 import type { FontType, FontWeight, ViewMode } from './types';
 
 function App() {
-  const [markdown, setMarkdown] = useState<string>('# Welcome to Yam\n\nStart typing or open a file to begin.\n\n- [x] Modern UI\n- [x] Dark Mode\n- [ ] Custom CSS\n\n<div style="color: red">Hello HTML</div>\n\n```js\nconsole.log("Hello World");\n```');
+  const [markdown, setMarkdown] = useState<string>(`# Welcome to Yam
+
+**Yam** (Yet Another Markdown App) is a modern, minimalist editor for macOS.
+
+## Features Overview
+
+### Typography & Formatting
+You can use **bold**, *italic*, ~~strikethrough~~, or \`inline code\`.
+
+### Lists
+- [x] Task lists are supported
+- [ ] Unchecked item
+- Bullet points
+  - Nested bullets
+    - Deeply nested
+
+1. Ordered lists
+2. Are also supported
+
+### Tables
+| Feature | Support |
+| :--- | :--- |
+| GitHub Flavored | ✅ |
+| HTML Rendering | ✅ |
+| PDF Export | ✅ |
+
+### Code Blocks
+
+\`\`\`typescript
+// React Component Example
+const Greeting = ({ name }: { name: string }) => (
+  <div className="p-4 bg-indigo-100 rounded">
+    Hello, {name}!
+  </div>
+);
+\`\`\`
+
+### HTML Support
+<div style="padding: 12px; background-color: #dbeafe; color: #1e40af; border-radius: 8px; border: 1px solid #bfdbfe;">
+  <strong>HTML Support:</strong> content can be styled directly.
+</div>
+
+> "Simplicity is the ultimate sophistication."
+`);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [font, setFont] = useState<FontType>('sans');
   const [fontWeight, setFontWeight] = useState<FontWeight>('normal');
