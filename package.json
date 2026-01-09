@@ -15,7 +15,10 @@
     "lint": "eslint .",
     "test": "vitest",
     "preview": "vite preview",
-    "dist": "npm run build && electron-builder"
+    "dist": "npm run build && electron-builder",
+    "website:dev": "vite website",
+    "website:build": "vite build website",
+    "website:test": "vitest run website/tests -c website/vitest.config.ts"
   },
   "build": {
     "appId": "com.yam.app",
