@@ -1,7 +1,7 @@
 {
   "name": "yam",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": "Yujia Bao",
   "description": "Yet Another Markdown app",
   "license": "Apache-2.0",
@@ -36,6 +36,13 @@
       "target": "dmg",
       "icon": "public/icon.png"
     },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "YujiaBao",
+        "repo": "yam"
+      }
+    ],
     "fileAssociations": [
       {
         "ext": "md",

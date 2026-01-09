@@ -36,7 +36,7 @@ const LandingPage: React.FC = () => {
               <span className="text-sm font-medium">YujiaBao / yam</span>
             </a>
             <a 
-              href="https://github.com/YujiaBao/yam/releases/latest/download/Yam-0.0.0-arm64.dmg"
+              href="https://github.com/YujiaBao/yam/releases/latest/download/Yam-0.1.0-arm64.dmg"
               className="hidden sm:block bg-gray-900 text-white px-4 py-2 rounded-full text-xs font-bold hover:bg-gray-800 transition-all shadow-md shadow-gray-200"
             >
               Download DMG
@@ -72,14 +72,14 @@ const LandingPage: React.FC = () => {
           {/* Primary CTA Section */}
           <div className="flex flex-col items-center justify-center gap-6 mb-24">
             <a 
-              href="https://github.com/YujiaBao/yam/releases/latest/download/Yam-0.0.0-arm64.dmg"
+              href="https://github.com/YujiaBao/yam/releases/latest/download/Yam-0.1.0-arm64.dmg"
               className="w-full sm:w-auto flex items-center justify-center gap-3 bg-indigo-600 text-white px-8 py-4 rounded-2xl text-lg font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-200 hover:scale-105 active:scale-95 text-decoration-none"
             >
               <Download size={20} />
               Download for macOS
             </a>
             <div className="flex flex-col items-center gap-1">
-              <span className="text-xs text-gray-400 font-bold tracking-wide uppercase">Version 0.0.0 (Universal)</span>
+              <span className="text-xs text-gray-400 font-bold tracking-wide uppercase">Version 0.1.0 (Universal)</span>
               <span className="text-[10px] text-gray-400 font-medium opacity-80">Free & Open Source</span>
             </div>
           </div>
