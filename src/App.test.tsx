@@ -17,8 +17,7 @@ describe('App', () => {
     const darkModes = screen.getAllByText(/Dark Mode/i);
     expect(darkModes.length).toBeGreaterThan(0);
     
-    // Check for "Custom CSS" text which is in the markdown
-    const customCssText = screen.getAllByText(/Custom CSS/i);
-    expect(customCssText.length).toBeGreaterThan(0);
+    // Check for "Export PDF" button
+    expect(screen.getByText(/Export PDF/i)).toBeInTheDocument();
   });
 });
