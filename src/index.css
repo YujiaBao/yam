@@ -20,6 +20,38 @@
   font-family: inherit !important;
 }
 
+/* Fix for Lists Visibility and Task List Alignment */
+.markdown-body ul, 
+.markdown-body ol {
+  padding-left: 2em !important;
+}
+
+.markdown-body ul {
+  list-style-type: disc !important;
+}
+
+.markdown-body ol {
+  list-style-type: decimal !important;
+}
+
+/* For lists containing task items, we remove the disc but keep the padding */
+.markdown-body .contains-task-list {
+  list-style-type: none !important;
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none !important;
+  position: relative;
+}
+
+/* Align checkbox with where the bullet would be */
+.markdown-body .task-list-item input[type="checkbox"] {
+  position: absolute;
+  left: -1.6em;
+  top: 0.45em;
+  margin: 0 !important;
+}
+
 /* Remove default pre styling to avoid double-boxing with SyntaxHighlighter */
 .markdown-body pre {
   background-color: transparent !important;
@@ -37,19 +69,36 @@
   font-weight: inherit !important;
 }
 
-/* Fix for tables and other elements inheriting dark mode styles incorrectly */
-/* We force light mode variables when in light mode */
-.markdown-body-light {
-    --color-canvas-default: #ffffff !important;
-    --color-canvas-subtle: #f6f8fa !important;
-    --color-border-default: #d0d7de !important;
-    --color-border-muted: #d8dee4 !important;
-    --color-neutral-muted: rgba(175, 184, 193, 0.2) !important;
-    --color-accent-fg: #0969da !important;
-    --color-fg-default: #24292f !important;
+/* Make heading borders lighter */
+.markdown-body h1,
+.markdown-body h2 {
+  border-bottom-color: rgba(128, 128, 128, 0.2) !important;
 }
 
-/* Hard override for table elements in light mode to ensure visibility */
+/* Theme variables */
+.markdown-body-light {
+    color-scheme: light;
+    --color-canvas-default: #ffffff;
+    --color-canvas-subtle: #f6f8fa;
+    --color-border-default: #d0d7de;
+    --color-border-muted: #d8dee4;
+    --color-neutral-muted: rgba(175, 184, 193, 0.2);
+    --color-accent-fg: #0969da;
+    --color-fg-default: #24292f;
+}
+
+.markdown-body-dark {
+    color-scheme: dark;
+    --color-canvas-default: #0d1117;
+    --color-canvas-subtle: #161b22;
+    --color-border-default: #30363d;
+    --color-border-muted: #21262d;
+    --color-neutral-muted: rgba(110, 118, 129, 0.4);
+    --color-accent-fg: #58a6ff;
+    --color-fg-default: #c9d1d9;
+}
+
+/* Hard override for table elements in light mode */
 .markdown-body-light table tr {
   background-color: #ffffff !important;
 }
@@ -66,20 +115,10 @@
 
 /* Fix for dark checkboxes in light mode */
 .markdown-body-light input[type="checkbox"] {
-  filter: invert(0) !important;
-  background-color: #ffffff !important;
-  border-color: #d0d7de !important;
-}
-
-/* We force dark mode variables when in dark mode */
-.markdown-body-dark {
-    --color-canvas-default: #0d1117 !important;
-    --color-canvas-subtle: #161b22 !important;
-    --color-border-default: #30363d !important;
-    --color-border-muted: #21262d !important;
-    --color-neutral-muted: rgba(110, 118, 129, 0.4) !important;
-    --color-accent-fg: #58a6ff !important;
-    --color-fg-default: #c9d1d9 !important;
+  appearance: checkbox !important;
+  color-scheme: light !important;
+  accent-color: #0969da !important;
+  filter: none !important;
 }
 
 @media print {

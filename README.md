@@ -24,7 +24,7 @@
 *   **Theming:**
     *   **Light/Dark Mode:** Instant toggle.
     *   **GitHub-Style Rendering:** Mimics the official GitHub look and feel for both light and dark modes.
-    *   **Custom CSS Themes:** Built-in presets (*Solarized*, *GitHub*, *Dracula*, *Nord*, *Cobalt*) + full user customization.
+    *   **Custom CSS Themes:** Built-in presets (*Solarized Light/Dark*, *GitHub*, *Dracula*, *Nord*, *Cobalt*) + full user customization.
     *   **CSS Reference:** Built-in helper to identify selectors.
 *   **Typography:** Control font family (Sans, Serif, Mono) and weight (Light, Normal, Bold).
 *   **Rich Content:**

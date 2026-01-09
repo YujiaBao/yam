@@ -3,31 +3,39 @@ import type { Theme } from '../types';
 import { DEFAULT_THEMES } from '../constants/themes';
 
 export const useThemes = () => {
-  const [cssThemes, setCssThemes] = useState<Theme[]>(() => {
-    const saved = localStorage.getItem('yam_css_themes');
-    return saved ? JSON.parse(saved) : DEFAULT_THEMES;
+  // Store only user-created themes in localStorage
+  const [userThemes, setUserThemes] = useState<Theme[]>(() => {
+    const saved = localStorage.getItem('yam_user_themes');
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [activeThemeId, setActiveThemeId] = useState<string>(() => {
     return localStorage.getItem('yam_active_theme_id') || 'default';
   });
 
-  // Current active CSS content
-  const activeCss = cssThemes.find(t => t.id === activeThemeId)?.css || '';
+  // Combine defaults and user themes
+  const allThemes = [...DEFAULT_THEMES, ...userThemes];
 
-  // Persist themes
+  // Current active theme object
+  const activeTheme = allThemes.find(t => t.id === activeThemeId) || DEFAULT_THEMES[0];
+  const activeCss = activeTheme.css;
+
+  // Persist user themes
   useEffect(() => {
-    localStorage.setItem('yam_css_themes', JSON.stringify(cssThemes));
-  }, [cssThemes]);
+    localStorage.setItem('yam_user_themes', JSON.stringify(userThemes));
+  }, [userThemes]);
 
   useEffect(() => {
     localStorage.setItem('yam_active_theme_id', activeThemeId);
   }, [activeThemeId]);
 
   const handleCssChange = (newCss: string) => {
-    setCssThemes(themes => themes.map(t =>
-      t.id === activeThemeId ? { ...t, css: newCss } : t
-    ));
+    // Only allow editing if it's a user theme
+    if (userThemes.some(t => t.id === activeThemeId)) {
+      setUserThemes(themes => themes.map(t =>
+        t.id === activeThemeId ? { ...t, css: newCss } : t
+      ));
+    }
   };
 
   const handleCreateTheme = () => {
@@ -35,20 +43,20 @@ export const useThemes = () => {
     if (!name) return;
 
     const newTheme: Theme = {
-      id: Date.now().toString(),
+      id: `user-${Date.now()}`,
       name,
       css: activeCss // Start with current CSS
     };
 
-    setCssThemes([...cssThemes, newTheme]);
+    setUserThemes([...userThemes, newTheme]);
     setActiveThemeId(newTheme.id);
   };
 
   const handleDeleteTheme = () => {
     if (confirm('Are you sure you want to delete this theme?')) {
-      const newThemes = cssThemes.filter(t => t.id !== activeThemeId);
-      setCssThemes(newThemes);
-      setActiveThemeId(newThemes[0]?.id || 'default');
+      const newThemes = userThemes.filter(t => t.id !== activeThemeId);
+      setUserThemes(newThemes);
+      setActiveThemeId('default');
     }
   };
 
@@ -62,27 +70,27 @@ export const useThemes = () => {
       if (typeof text === 'string') {
         const name = file.name.replace('.css', '');
         const newTheme: Theme = {
-          id: Date.now().toString(),
+          id: `user-${Date.now()}`,
           name,
           css: text
         };
-        setCssThemes([...cssThemes, newTheme]);
+        setUserThemes([...userThemes, newTheme]);
         setActiveThemeId(newTheme.id);
       }
     };
     reader.readAsText(file);
-    // Reset input
     event.target.value = '';
   };
 
   return {
-    cssThemes,
+    cssThemes: allThemes,
     activeThemeId,
     activeCss,
     setActiveThemeId,
     handleCssChange,
     handleCreateTheme,
     handleDeleteTheme,
-    handleImportCss
+    handleImportCss,
+    isDefaultTheme: DEFAULT_THEMES.some(t => t.id === activeThemeId)
   };
 };

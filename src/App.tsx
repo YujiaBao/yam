@@ -72,7 +72,8 @@ const Greeting = ({ name }: { name: string }) => (
     handleCssChange,
     handleCreateTheme,
     handleDeleteTheme,
-    handleImportCss
+    handleImportCss,
+    isDefaultTheme
   } = useThemes();
 
   // Handle Theme
@@ -214,6 +215,7 @@ const Greeting = ({ name }: { name: string }) => (
               onCreateTheme={handleCreateTheme}
               onDeleteTheme={handleDeleteTheme}
               onImportCss={handleImportCss}
+              isDefaultTheme={isDefaultTheme}
             />
           )}
         </main>

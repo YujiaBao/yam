@@ -66,7 +66,7 @@ export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme, fil
                   language={match[1]}
                   PreTag="div"
                   customStyle={{ 
-                    margin: '1.5em 0', 
+                    margin: '0.5em 0', 
                     borderRadius: '0', 
                     padding: '1.25em',
                     fontSize: '0.875rem',

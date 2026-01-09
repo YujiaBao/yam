@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Upload, Plus, Trash2, HelpCircle } from 'lucide-react';
+import { X, Upload, Plus, Trash2, HelpCircle, Lock } from 'lucide-react';
 import clsx from 'clsx';
 import type { Theme } from '../types';
 import { DEFAULT_THEMES } from '../constants/themes';
@@ -14,18 +14,19 @@ interface SettingsModalProps {
   onCreateTheme: () => void;
   onDeleteTheme: () => void;
   onImportCss: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isDefaultTheme: boolean;
 }
 
 const CSS_HELP = [
-  { selector: '.prose', desc: 'Main content container' },
-  { selector: '.prose h1, h2, h3', desc: 'Headings' },
-  { selector: '.prose p', desc: 'Paragraphs' },
-  { selector: '.prose li', desc: 'List items (bullet points)' },
-  { selector: '.prose ul, .prose ol', desc: 'List containers' },
-  { selector: '.prose a', desc: 'Links' },
-  { selector: '.prose pre', desc: 'Code blocks' },
-  { selector: '.prose code', desc: 'Inline code' },
-  { selector: '.prose blockquote', desc: 'Quotes' },
+  { selector: '.markdown-body', desc: 'Main content container' },
+  { selector: '.markdown-body h1, h2, h3', desc: 'Headings' },
+  { selector: '.markdown-body p', desc: 'Paragraphs' },
+  { selector: '.markdown-body li', desc: 'List items (bullet points)' },
+  { selector: '.markdown-body ul, .markdown-body ol', desc: 'List containers' },
+  { selector: '.markdown-body a', desc: 'Links' },
+  { selector: '.markdown-body pre', desc: 'Code blocks' },
+  { selector: '.markdown-body code', desc: 'Inline code' },
+  { selector: '.markdown-body blockquote', desc: 'Quotes' },
   { selector: 'body', desc: 'App background' },
 ];
 
@@ -38,7 +39,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onCssChange,
   onCreateTheme,
   onDeleteTheme,
-  onImportCss
+  onImportCss,
+  isDefaultTheme
 }) => {
   const [showHelp, setShowHelp] = useState(false);
 
@@ -111,17 +113,28 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Editor & Help */}
           <div className="flex-1 flex overflow-hidden">
             <div className={clsx("flex flex-col transition-all duration-300", showHelp ? "w-1/2 border-r border-gray-200 dark:border-gray-700" : "w-full")}>
-              <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
-                <h3 className="text-sm font-medium">{cssThemes.find(t => t.id === activeThemeId)?.name}</h3>
-                <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
-                  CSS changes are saved automatically.
-                </p>
+              <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50 flex justify-between items-center">
+                <div>
+                  <h3 className="text-sm font-medium">{cssThemes.find(t => t.id === activeThemeId)?.name}</h3>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                    {isDefaultTheme ? "Default themes are read-only." : "CSS changes are saved automatically."}
+                  </p>
+                </div>
+                {isDefaultTheme && (
+                  <div className="flex items-center gap-1.5 px-2 py-1 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 rounded text-[10px] font-bold">
+                    <Lock size={10} /> READ ONLY
+                  </div>
+                )}
               </div>
               <textarea
-                className="flex-1 w-full p-4 bg-white dark:bg-gray-900 font-mono text-xs resize-none outline-none leading-relaxed"
+                className={clsx(
+                  "flex-1 w-full p-4 bg-white dark:bg-gray-900 font-mono text-xs resize-none outline-none leading-relaxed",
+                  isDefaultTheme && "opacity-60 cursor-not-allowed"
+                )}
                 placeholder="/* Enter custom CSS */"
                 value={activeCss}
                 onChange={(e) => onCssChange(e.target.value)}
+                readOnly={isDefaultTheme}
                 spellCheck={false}
               />
             </div>
