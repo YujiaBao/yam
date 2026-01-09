@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-900;
+  }
+}
+
+@media print {
+  /* Hide sidebar and drag region */
+  aside, .drag-region {
+    display: none !important;
+  }
+
+  /* Hide editor */
+  .editor-pane {
+    display: none !important;
+  }
+
+  /* Ensure preview takes full space */
+  .preview-pane {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    position: static !important;
+  }
+
+  /* Reset main container layout */
+  main {
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  /* Reset root layout */
+  body, #root {
+    overflow: visible !important;
+    height: auto !important;
+  }
+}
