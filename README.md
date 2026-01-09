@@ -23,13 +23,15 @@
 *   **Split View:** Real-time editing and preview side-by-side.
 *   **Theming:**
     *   **Light/Dark Mode:** Instant toggle.
+    *   **GitHub-Style Rendering:** Mimics the official GitHub look and feel for both light and dark modes.
     *   **Custom CSS Themes:** Built-in presets (*Solarized*, *GitHub*, *Dracula*, *Nord*, *Cobalt*) + full user customization.
     *   **CSS Reference:** Built-in helper to identify selectors.
 *   **Typography:** Control font family (Sans, Serif, Mono) and weight (Light, Normal, Bold).
 *   **Rich Content:**
     *   **GFM Support:** Tables, checklists, strikethrough.
     *   **HTML Support:** Render inline HTML tags.
-    *   **Syntax Highlighting:** Beautiful code blocks for various languages.
+    *   **Syntax Highlighting:** Beautiful code blocks with GitHub-inspired themes.
+    *   **Local Images:** Seamlessly load and render images from your local filesystem.
 *   **Productivity:**
     *   **PDF Export:** High-quality export with theme preservation.
     *   **File Associations:** Open `.md` files directly from Finder.

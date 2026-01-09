@@ -49,6 +49,28 @@
     --color-fg-default: #24292f !important;
 }
 
+/* Hard override for table elements in light mode to ensure visibility */
+.markdown-body-light table tr {
+  background-color: #ffffff !important;
+}
+
+.markdown-body-light table tr:nth-child(2n) {
+  background-color: #f6f8fa !important;
+}
+
+.markdown-body-light table th,
+.markdown-body-light table td {
+  border-color: #d0d7de !important;
+  color: #24292f !important;
+}
+
+/* Fix for dark checkboxes in light mode */
+.markdown-body-light input[type="checkbox"] {
+  filter: invert(0) !important;
+  background-color: #ffffff !important;
+  border-color: #d0d7de !important;
+}
+
 /* We force dark mode variables when in dark mode */
 .markdown-body-dark {
     --color-canvas-default: #0d1117 !important;
