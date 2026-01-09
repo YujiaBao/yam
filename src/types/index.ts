@@ -18,6 +18,7 @@ export interface FontOption {
 
 export interface VisualSettings {
   backgroundColor: string;
+  codeBackgroundColor: string;
   textColor: string;
   headingColor: string;
   linkColor: string;

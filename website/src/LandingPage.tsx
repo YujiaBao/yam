@@ -30,9 +30,10 @@ const LandingPage: React.FC = () => {
               href="https://github.com/YujiaBao/yam" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-gray-500 hover:text-gray-900 transition-colors p-2"
+              className="text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-gray-50"
             >
-              <Github size={20} />
+              <Github size={18} />
+              <span className="text-sm font-medium">YujiaBao / yam</span>
             </a>
             <a 
               href="https://github.com/YujiaBao/yam/releases/latest/download/Yam-0.0.0-arm64.dmg"
@@ -48,11 +49,8 @@ const LandingPage: React.FC = () => {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="max-w-6xl mx-auto px-6 pt-24 pb-32 text-center">
-          <div className="inline-block px-4 py-1.5 mb-8 text-[10px] font-bold tracking-widest uppercase bg-indigo-50 text-indigo-600 rounded-full border border-indigo-100">
-            Native Markdown for macOS
-          </div>
           <h1 className="text-6xl md:text-8xl font-extrabold tracking-tighter mb-8 text-gray-900">
-            Yam.
+            Yam
           </h1>
 
           {/* Prominent App Icon */}
@@ -68,7 +66,7 @@ const LandingPage: React.FC = () => {
           </div>
 
           <p className="text-xl md:text-2xl font-medium text-gray-500 max-w-2xl mx-auto mb-12 leading-tight">
-            Yet another Markdown <br className="hidden md:block" /> for macOS.
+            Yet Another Markdown app.
           </p>
 
           {/* Primary CTA Section */}
@@ -101,7 +99,7 @@ const LandingPage: React.FC = () => {
               
               <div className="flex-1 flex justify-center">
                 <div className="flex bg-gray-200/50 p-1 rounded-xl gap-1 overflow-x-auto no-scrollbar max-w-[300px] sm:max-w-none">
-                  {['github-light', 'nord', 'dracula', 'solarized-dark'].map(id => (
+                  {['github-light', 'nord', 'dracula'].map(id => (
                     <button
                       key={id}
                       onClick={() => setActiveThemeId(id)}

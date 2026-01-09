@@ -323,11 +323,20 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                               />
                             </div>
                             <div className="flex items-center justify-between">
-                              <label className="text-xs text-gray-600 dark:text-gray-400">Code</label>
+                              <label className="text-xs text-gray-600 dark:text-gray-400">Code Text</label>
                               <input 
                                 type="color" 
                                 value={visualSettings.codeColor}
                                 onChange={(e) => handleVisualSettingChange('codeColor', e.target.value)}
+                                className="w-8 h-8 rounded cursor-pointer bg-transparent border-0"
+                              />
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <label className="text-xs text-gray-600 dark:text-gray-400">Code Background</label>
+                              <input 
+                                type="color" 
+                                value={visualSettings.codeBackgroundColor}
+                                onChange={(e) => handleVisualSettingChange('codeBackgroundColor', e.target.value)}
                                 className="w-8 h-8 rounded cursor-pointer bg-transparent border-0"
                               />
                             </div>

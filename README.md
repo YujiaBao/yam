@@ -1,7 +1,7 @@
-# Yam (Yet Another Markdown App)
+# YAM: Yet Another Markdown app
 
 <p align="center">
-  <img src="build/icon.png" alt="Yam Icon" width="128" height="128" />
+  <img src="public/icon.png" alt="Yam Icon" width="128" height="128" />
 </p>
 
 <p align="center">
@@ -9,18 +9,23 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/YujiaBao/yam/actions"><img src="https://github.com/YujiaBao/yam/actions/workflows/build.yml/badge.svg" alt="Build Status"></a>
+  <a href="https://yam.yujia.io"><strong>yam.yujia.io</strong></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/YujiaBao/yam/actions/workflows/build.yml"><img src="https://github.com/YujiaBao/yam/actions/workflows/build.yml/badge.svg" alt="Build Status"></a>
+  <a href="https://github.com/YujiaBao/yam/actions/workflows/deploy-website.yml"><img src="https://github.com/YujiaBao/yam/actions/workflows/deploy-website.yml/badge.svg" alt="Website Deployment"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
 </p>
 
 ---
 
-**Yam** is built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/), and [Tailwind CSS](https://tailwindcss.com/), designed to provide a native-like experience on macOS with a focus on simplicity and customizability.
+**YAM** is built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/), and [Tailwind CSS](https://tailwindcss.com/), designed to provide a native-like experience on macOS with a focus on simplicity and customizability.
 
 ## ✨ Features
 
 *   **Modern UI:** Clean, focus-oriented design with theme-integrated backgrounds across the entire window.
-*   **Split View:** Real-time editing and preview side-by-side.
+*   **Split View:** Real-time editing and preview side-by-side with synchronized scrolling.
 *   **Advanced Theming:**
     *   **Visual Editor:** Intuitive sliders and color pickers for Colors, Typography, Spacing, and Layout.
     *   **Bidirectional Mapping:** Seamlessly switch between the Visual Editor and raw CSS; changes in one reflect in the other.

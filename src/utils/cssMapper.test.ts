@@ -5,6 +5,7 @@ import type { VisualSettings } from '../types';
 describe('cssMapper', () => {
   const mockSettings: VisualSettings = {
     backgroundColor: '#123456',
+    codeBackgroundColor: '#654321',
     textColor: '#abcdef',
     headingColor: '#fedcba',
     linkColor: '#654321',
@@ -23,6 +24,7 @@ describe('cssMapper', () => {
     const parsed = parseCss(css);
     
     expect(parsed.backgroundColor.toLowerCase()).toBe(mockSettings.backgroundColor.toLowerCase());
+    expect(parsed.codeBackgroundColor.toLowerCase()).toBe(mockSettings.codeBackgroundColor.toLowerCase());
     expect(parsed.textColor.toLowerCase()).toBe(mockSettings.textColor.toLowerCase());
     expect(parsed.headingColor.toLowerCase()).toBe(mockSettings.headingColor.toLowerCase());
     expect(parsed.linkColor.toLowerCase()).toBe(mockSettings.linkColor.toLowerCase());

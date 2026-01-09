@@ -99,32 +99,33 @@ export const Preview = forwardRef<HTMLElement, PreviewProps>(({ markdown, viewMo
             code({node, inline, className, children, ...props}: any) {
               const match = /language-(\w+)/.exec(className || '');
               return !inline && match ? (
-                <SyntaxHighlighter
-                  style={syntaxTheme}
-                  language={match[1]}
-                  PreTag="div"
-                  customStyle={{ 
-                    margin: '0.5em 0', 
-                    borderRadius: '0', 
-                    padding: '1.25em',
-                    fontSize: '0.875rem',
-                    lineHeight: '1.5',
-                    fontFamily: 'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                    background: themeId === 'default' ? (isDark ? '#1e1e1e' : '#f6f8fa') : undefined,
-                    border: 'none'
-                  }}
-                  codeTagProps={{
-                    style: {
-                      fontWeight: '500',
-                      fontFamily: 'inherit'
-                    }
-                  }}
-                  {...props}
-                >
-                  {String(children).replace(/\n$/, '')}
-                </SyntaxHighlighter>
+                <div className="my-6 rounded-xl overflow-hidden border border-black/[0.03] dark:border-white/[0.03]">
+                  <SyntaxHighlighter
+                    style={syntaxTheme}
+                    language={match[1]}
+                    PreTag="div"
+                    customStyle={{ 
+                      margin: 0, 
+                      padding: '1.5em',
+                      fontSize: '0.875rem',
+                      lineHeight: '1.6',
+                      fontFamily: 'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                      background: 'var(--color-canvas-code)',
+                      border: 'none'
+                    }}
+                    codeTagProps={{
+                      style: {
+                        fontWeight: '500',
+                        fontFamily: 'inherit'
+                      }
+                    }}
+                    {...props}
+                  >
+                    {String(children).replace(/\n$/, '')}
+                  </SyntaxHighlighter>
+                </div>
               ) : (
-                <code className={clsx(className, "font-medium")} {...props}>
+                <code className={clsx(className, "font-medium bg-[var(--color-canvas-code)] px-1.5 py-0.5 rounded text-sm")} {...props}>
                   {children}
                 </code>
               );

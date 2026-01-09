@@ -7,7 +7,12 @@ describe('Yam Landing Page', () => {
     render(<LandingPage />);
     const brandTitles = screen.getAllByText(/Yam/i);
     expect(brandTitles.length).toBeGreaterThan(0);
-    expect(screen.getByText(/Yet another Markdown for macOS/i)).toBeInTheDocument();
+    expect(screen.getByText(/Yet Another Markdown app\./i)).toBeInTheDocument();
+  });
+
+  it('contains a link to the github repo', () => {
+    render(<LandingPage />);
+    expect(screen.getByText(/YujiaBao \/ yam/i)).toBeInTheDocument();
   });
 
   it('contains a download button for the macOS DMG', () => {
