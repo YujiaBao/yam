@@ -1,6 +1,7 @@
-import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, protocol, net } from 'electron';
 import path from 'path';
 import fs from 'fs';
+import { pathToFileURL } from 'url';
 
 // Maps to track open files
 // Key: Absolute file path, Value: Window ID
@@ -45,7 +46,8 @@ const createWindow = (filePath?: string) => {
           console.error('Failed to read file', err);
           return;
         }
-        mainWindow.webContents.send('file-opened', data);
+        // Send both content and the full file path
+        mainWindow.webContents.send('file-opened', { content: data, filePath });
       });
     });
   }
@@ -117,6 +119,18 @@ ipcMain.handle('export-pdf', async (event) => {
 });
 
 app.on('ready', () => {
+  // Register 'yam-local' protocol to serve local files securely
+  protocol.handle('yam-local', (request) => {
+    const url = request.url.replace('yam-local://', '');
+    try {
+      const decodedPath = decodeURIComponent(url);
+      return net.fetch(pathToFileURL(decodedPath).toString());
+    } catch (error) {
+      console.error('Failed to handle yam-local protocol:', error);
+      return new Response('Not Found', { status: 404 });
+    }
+  });
+
   // Process queue
   if (fileOpenQueue.length > 0) {
     fileOpenQueue.forEach(path => handleOpenFile(path));

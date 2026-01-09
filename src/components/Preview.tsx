@@ -11,9 +11,34 @@ interface PreviewProps {
   markdown: string;
   viewMode: ViewMode;
   theme: 'light' | 'dark';
+  filePath?: string;
 }
 
-export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme }) => {
+export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme, filePath }) => {
+  const transformImageUri = (uri: string) => {
+    // If it's an absolute URL or data URI, return as is
+    if (/^https?:\]\/\//.test(uri) || /^data:/.test(uri)) {
+      return uri;
+    }
+
+    // If we have a file path, try to resolve relative paths
+    if (filePath && !uri.startsWith('/')) {
+      // Get directory of current file
+      const dir = filePath.substring(0, filePath.lastIndexOf('/')); // Simplified, assumes macOS/Linux paths
+      // Construct yam-local URI
+      // We need to encode the path components
+      const absolutePath = `${dir}/${uri}`;
+      return `yam-local://${absolutePath}`;
+    }
+    
+    // If absolute path on file system
+    if (uri.startsWith('/')) {
+        return `yam-local://${uri}`;
+    }
+
+    return uri;
+  };
+
   return (
     <div className={clsx(
       "h-full overflow-y-auto bg-white dark:bg-gray-900 preview-pane",
@@ -23,6 +48,7 @@ export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme }) =
         <ReactMarkdown 
           remarkPlugins={[remarkGfm]} 
           rehypePlugins={[rehypeRaw]}
+          urlTransform={transformImageUri}
           components={{
             code({node, inline, className, children, ...props}: any) {
               const match = /language-(\w+)/.exec(className || '');
@@ -31,9 +57,9 @@ export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme }) =
                   style={theme === 'dark' ? dracula : ghcolors}
                   language={match[1]}
                   PreTag="div"
-                  customStyle={{ 
-                    margin: '1.5em 0', 
-                    borderRadius: '0.8rem', 
+                  customStyle={{
+                    margin: '1.5em 0',
+                    borderRadius: '0.8rem',
                     padding: '1.25em',
                     fontSize: '0.875rem',
                     lineHeight: '1.5',

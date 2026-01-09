@@ -17,7 +17,9 @@ function App() {
 ## Features Overview
 
 ### Typography & Formatting
-You can use **bold**, *italic*, ~~strikethrough~~, or \`inline code\`.
+You can use **bold**, *italic*, ~~strikethrough~~, or 
+code
+.
 
 ### Lists
 - [x] Task lists are supported
@@ -61,6 +63,7 @@ const Greeting = ({ name }: { name: string }) => (
   const [showSettings, setShowSettings] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [filePath, setFilePath] = useState<string>('');
 
   // Custom CSS Themes Hook
   const {
@@ -86,8 +89,9 @@ const Greeting = ({ name }: { name: string }) => (
   // Handle incoming file from Electron (e.g. "Open With")
   useEffect(() => {
     if (window.electron && window.electron.onFileOpened) {
-      const unsubscribe = window.electron.onFileOpened((content) => {
-        setMarkdown(content);
+      const unsubscribe = window.electron.onFileOpened((data) => {
+        setMarkdown(data.content);
+        setFilePath(data.filePath);
         // Automatically switch to preview mode and hide sidebar for better reading experience
         setViewMode('preview');
         setIsSidebarOpen(false);
@@ -100,6 +104,12 @@ const Greeting = ({ name }: { name: string }) => (
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
+
+    // For file input, we get the file object but we might not get the full path reliably in browser context
+    // However, Electron sets the 'path' property on the File object
+    // @ts-ignore
+    const fullPath = file.path; 
+    setFilePath(fullPath || '');
 
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -192,6 +202,7 @@ const Greeting = ({ name }: { name: string }) => (
             markdown={markdown}
             viewMode={viewMode}
             theme={theme}
+            filePath={filePath}
           />
 
           {showSettings && (
