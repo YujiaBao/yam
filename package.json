@@ -30,11 +30,11 @@
     ],
     "directories": {
       "output": "release",
-      "buildResources": "build"
+      "buildResources": "public"
     },
     "mac": {
       "target": "dmg",
-      "icon": "build/icon.png"
+      "icon": "public/icon.png"
     },
     "fileAssociations": [
       {

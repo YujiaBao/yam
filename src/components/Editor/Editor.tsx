@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useImperativeHandle, forwardRef } from 'react';
 import clsx from 'clsx';
 import type { ViewMode } from '../../types';
 
@@ -10,13 +10,13 @@ interface EditorProps {
 
 /**
  * Markdown Editor component.
- * 
- * @param markdown - The raw markdown string to edit
- * @param setMarkdown - Function to update the markdown content
- * @param viewMode - Current view mode (used to determine visibility and width)
  */
-export const Editor: React.FC<EditorProps> = ({ markdown, setMarkdown, viewMode }) => {
+export const Editor = forwardRef<HTMLElement, EditorProps>(({ markdown, setMarkdown, viewMode }, ref) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Expose the textarea to the parent ref for scroll synchronization
+  useImperativeHandle(ref, () => textareaRef.current as HTMLTextAreaElement);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     // Check for Cmd + / (macOS)
@@ -99,10 +99,13 @@ export const Editor: React.FC<EditorProps> = ({ markdown, setMarkdown, viewMode 
   };
 
   return (
-    <div className={clsx(
-      "h-full flex flex-col border-r border-gray-200 dark:border-gray-800 editor-pane overflow-y-auto bg-gray-50 dark:bg-gray-900",
-      viewMode === 'edit' ? "w-full" : viewMode === 'split' ? "w-1/2" : "w-0 hidden"
-    )}>
+    <div 
+      ref={containerRef}
+      className={clsx(
+        "h-full flex flex-col border-r border-gray-200 dark:border-gray-800 editor-pane bg-gray-50 dark:bg-gray-900",
+        viewMode === 'edit' ? "w-full" : viewMode === 'split' ? "w-1/2" : "w-0 hidden"
+      )}
+    >
       <div className="w-full max-w-3xl mx-auto h-full flex flex-col">
         <textarea
           ref={textareaRef}
@@ -114,6 +117,7 @@ export const Editor: React.FC<EditorProps> = ({ markdown, setMarkdown, viewMode 
           placeholder="Start writing..."
         />
       </div>
-    </div>
-  );
-};
+        </div>
+      );
+    });
+    

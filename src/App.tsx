@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   PanelLeft
 } from 'lucide-react';
@@ -8,6 +8,7 @@ import { Preview } from './components/Preview/Preview';
 import { SettingsModal } from './components/SettingsModal/SettingsModal';
 import { useThemes } from './hooks/useThemes';
 import { useFonts } from './hooks/useFonts';
+import { useSyncScroll } from './hooks/useSyncScroll';
 import type { ViewMode } from './types';
 
 function App() {
@@ -17,6 +18,9 @@ function App() {
   const [isExporting, setIsExporting] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [filePath, setFilePath] = useState<string>('');
+
+  const editorRef = useRef<HTMLElement>(null);
+  const previewRef = useRef<HTMLElement>(null);
 
   const {
     fonts,
@@ -48,6 +52,9 @@ function App() {
   } = useThemes();
 
   const isDark = activeTheme.isDark;
+
+  // Synchronized Scrolling
+  useSyncScroll(editorRef, previewRef, viewMode === 'split');
 
   // Handle Theme
   useEffect(() => {
@@ -160,12 +167,14 @@ function App() {
 
         <main className="flex-1 flex overflow-hidden relative">
           <Editor 
+            ref={editorRef}
             markdown={markdown}
             setMarkdown={setMarkdown}
             viewMode={viewMode}
           />
           
           <Preview 
+            ref={previewRef}
             markdown={markdown}
             viewMode={viewMode}
             isDark={!!isDark}

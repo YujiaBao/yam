@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
@@ -27,7 +27,7 @@ interface PreviewProps {
  * Markdown Preview component.
  * Renders markdown to HTML with GitHub styling, code syntax highlighting, and local image support.
  */
-export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, isDark, themeId, filePath }) => {
+export const Preview = forwardRef<HTMLElement, PreviewProps>(({ markdown, viewMode, isDark, themeId, filePath }, ref) => {
   const getSyntaxTheme = () => {
     switch (themeId) {
       case 'github-light':
@@ -73,10 +73,13 @@ export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, isDark, th
   };
 
   return (
-    <div className={clsx(
-      "h-full overflow-y-auto preview-pane",
-      viewMode === 'preview' ? "w-full" : viewMode === 'split' ? "w-1/2" : "w-0 hidden"
-    )}>
+    <div 
+      ref={ref as any}
+      className={clsx(
+        "h-full overflow-y-auto preview-pane",
+        viewMode === 'preview' ? "w-full" : viewMode === 'split' ? "w-1/2" : "w-0 hidden"
+      )}
+    >
       {/* GitHub Markdown styling container */}
       <div 
         className={clsx(
@@ -133,4 +136,4 @@ export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, isDark, th
       </div>
     </div>
   );
-};
+});
