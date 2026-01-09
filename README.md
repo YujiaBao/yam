@@ -1,91 +1,87 @@
 # Yam (Yet Another Markdown App)
 
-A modern, minimalist, and powerful Markdown editor for macOS. Built with **Electron**, **React**, **TypeScript**, and **Tailwind CSS**.
+<p align="center">
+  <img src="build/icon.png" alt="Yam Icon" width="128" height="128" />
+</p>
 
-## Features
+<p align="center">
+  <strong>A modern, minimalist, and powerful Markdown editor for macOS.</strong>
+</p>
 
-*   **Modern UI:** Clean, glassmorphism-inspired design that feels native on macOS.
+<p align="center">
+  <a href="https://github.com/YujiaBao/yam/actions"><img src="https://github.com/YujiaBao/yam/actions/workflows/build.yml/badge.svg" alt="Build Status"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
+</p>
+
+---
+
+**Yam** is built with [Electron](https://www.electronjs.org/), [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/), and [Tailwind CSS](https://tailwindcss.com/), designed to provide a native-like experience on macOS with a focus on simplicity and customizability.
+
+## ✨ Features
+
+*   **Modern UI:** Clean, glassmorphism-inspired design.
 *   **Split View:** Real-time editing and preview side-by-side.
 *   **Theming:**
-    *   **Light/Dark Mode:** Built-in toggle with instant switching.
-    *   **Custom CSS Themes:** Create, import, and manage custom CSS themes to style the editor and preview exactly how you like. Includes presets like *Solarized*, *GitHub Dark*, *Dracula*, *Nord*, and *Cobalt*.
-    *   **CSS Reference Guide:** Built-in helper to identify CSS selectors for customization.
-*   **Typography Control:** Toggle fonts (Sans, Serif, Mono) and font weights (Light, Normal, Bold).
-*   **HTML Support:** Full support for rendering inline HTML tags within Markdown.
-*   **Code Highlighting:** Syntax highlighting for code blocks with dedicated themes for light and dark modes.
-*   **PDF Export:** Export your rendered Markdown to high-quality PDF files.
-*   **File Support:** 
-    *   Open and edit local `.md` and `.txt` files.
-    *   **File Associations:** Automatically opens Markdown files from Finder or via "Open With".
-    *   **Drag & Drop:** Drag files onto the app icon to open them.
+    *   **Light/Dark Mode:** Instant toggle.
+    *   **Custom CSS Themes:** Built-in presets (*Solarized*, *GitHub*, *Dracula*, *Nord*, *Cobalt*) + full user customization.
+    *   **CSS Reference:** Built-in helper to identify selectors.
+*   **Typography:** Control font family (Sans, Serif, Mono) and weight (Light, Normal, Bold).
+*   **Rich Content:**
+    *   **GFM Support:** Tables, checklists, strikethrough.
+    *   **HTML Support:** Render inline HTML tags.
+    *   **Syntax Highlighting:** Beautiful code blocks for various languages.
+*   **Productivity:**
+    *   **PDF Export:** High-quality export with theme preservation.
+    *   **File Associations:** Open `.md` files directly from Finder.
+    *   **Drag & Drop:** Open files by dropping them on the app.
 
-## Architecture
+## 🛠️ Architecture
 
-The project follows a modular React architecture within an Electron environment.
+*   **`src/components/`**: Modular UI (Sidebar, Editor, Preview, Settings).
+*   **`src/hooks/`**: Logic encapsulation (e.g., `useThemes`).
+*   **`electron/`**: Main process (Window management, IPC, native dialogs).
 
-*   **`src/components/`**: Reusable UI components (Sidebar, Editor, Preview, SettingsModal).
-*   **`src/hooks/`**: Custom React hooks for logic encapsulation (e.g., `useThemes` for theme management).
-*   **`src/types/`**: TypeScript type definitions.
-*   **`src/constants/`**: App-wide constants (e.g., default theme presets).
-*   **`electron/`**: Main process code for Electron (window management, IPC handlers).
-
-## Development
+## 🚀 Development
 
 ### Prerequisites
 
 *   Node.js (v18+)
 *   npm
 
-### Installation
+### Quick Start
 
-```bash
-git clone https://github.com/YujiaBao/yam.git
-cd yam
-npm install
-```
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/YujiaBao/yam.git
+    cd yam
+    ```
 
-### Running in Development Mode
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-Starts the Vite dev server (frontend) and Electron (main process) with hot-reloading.
-
-```bash
-npm run dev
-```
+3.  **Run locally:**
+    ```bash
+    npm run dev
+    ```
 
 ### Building for Production
 
-Builds the React app, compiles the Electron main process, and packages the application for macOS (`.dmg`).
+Build the React app and package for macOS (`.dmg`):
 
 ```bash
 npm run dist
 ```
 
-The output `.dmg` file will be located in the `release/` directory.
+Artifacts will be in the `release/` directory.
 
-### Running Tests
-
-Run the Vitest test suite to verify UI components and logic.
+### Testing
 
 ```bash
 npm test
 ```
 
-## Customization
+## 📄 License
 
-### Adding a Custom App Icon
-
-Place a 512x512 PNG file named `icon.png` in the `build/` directory before running the build command. The build script will use this icon for the macOS application.
-
-## Technologies Used
-
-*   **Runtime:** [Electron](https://www.electronjs.org/)
-*   **Frontend:** [React](https://reactjs.org/) + [Vite](https://vitejs.dev/)
-*   **Language:** [TypeScript](https://www.typescriptlang.org/)
-*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-*   **Markdown:** [react-markdown](https://github.com/remarkjs/react-markdown) + [remark-gfm](https://github.com/remarkjs/remark-gfm) + [rehype-raw](https://github.com/rehypejs/rehype-raw)
-*   **Syntax Highlighting:** [react-syntax-highlighter](https://github.com/react-syntax-highlighter/react-syntax-highlighter)
-*   **Icons:** [Lucide React](https://lucide.dev/)
-
-## License
-
-Apache-2.0
+Licensed under the [Apache License, Version 2.0](LICENSE).
