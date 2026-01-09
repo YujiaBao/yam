@@ -9,10 +9,15 @@ A modern, minimalist, and powerful Markdown editor for macOS. Built with **Elect
 *   **Theming:**
     *   **Light/Dark Mode:** Built-in toggle with instant switching.
     *   **Custom CSS Themes:** Create, import, and manage custom CSS themes to style the editor and preview exactly how you like. Includes presets like *Solarized*, *GitHub Dark*, *Dracula*, *Nord*, and *Cobalt*.
+    *   **CSS Reference Guide:** Built-in helper to identify CSS selectors for customization.
 *   **Typography Control:** Toggle fonts (Sans, Serif, Mono) and font weights (Light, Normal, Bold).
 *   **HTML Support:** Full support for rendering inline HTML tags within Markdown.
+*   **Code Highlighting:** Syntax highlighting for code blocks with dedicated themes for light and dark modes.
 *   **PDF Export:** Export your rendered Markdown to high-quality PDF files.
-*   **Local File Support:** Open and edit local `.md` and `.txt` files.
+*   **File Support:** 
+    *   Open and edit local `.md` and `.txt` files.
+    *   **File Associations:** Automatically opens Markdown files from Finder or via "Open With".
+    *   **Drag & Drop:** Drag files onto the app icon to open them.
 
 ## Architecture
 
@@ -34,7 +39,7 @@ The project follows a modular React architecture within an Electron environment.
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/yam.git
+git clone https://github.com/YujiaBao/yam.git
 cd yam
 npm install
 ```
@@ -78,6 +83,7 @@ Place a 512x512 PNG file named `icon.png` in the `build/` directory before runni
 *   **Language:** [TypeScript](https://www.typescriptlang.org/)
 *   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 *   **Markdown:** [react-markdown](https://github.com/remarkjs/react-markdown) + [remark-gfm](https://github.com/remarkjs/remark-gfm) + [rehype-raw](https://github.com/rehypejs/rehype-raw)
+*   **Syntax Highlighting:** [react-syntax-highlighter](https://github.com/react-syntax-highlighter/react-syntax-highlighter)
 *   **Icons:** [Lucide React](https://lucide.dev/)
 
 ## License
