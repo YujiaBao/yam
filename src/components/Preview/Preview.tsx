@@ -3,27 +3,53 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { ghcolors, dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { 
+  ghcolors, 
+  dracula, 
+  solarizedlight, 
+  nord, 
+  atomDark, 
+  solarizedDarkAtom,
+  vscDarkPlus
+} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import clsx from 'clsx';
 import type { ViewMode } from '../../types';
 
 interface PreviewProps {
   markdown: string;
   viewMode: ViewMode;
-  theme: 'light' | 'dark';
+  isDark: boolean;
+  themeId: string;
   filePath?: string;
 }
 
 /**
  * Markdown Preview component.
  * Renders markdown to HTML with GitHub styling, code syntax highlighting, and local image support.
- * 
- * @param markdown - The raw markdown string to render
- * @param viewMode - Current view mode
- * @param theme - Current application theme
- * @param filePath - Path of the currently open file (used for relative image resolution)
  */
-export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme, filePath }) => {
+export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, isDark, themeId, filePath }) => {
+  const getSyntaxTheme = () => {
+    switch (themeId) {
+      case 'github-light':
+        return ghcolors;
+      case 'solarized-light':
+        return solarizedlight;
+      case 'solarized-dark':
+        return solarizedDarkAtom;
+      case 'nord':
+        return nord;
+      case 'dracula':
+        return dracula;
+      case 'github-dark':
+        return vscDarkPlus;
+      case 'cobalt':
+        return atomDark; // Cobalt isn't always available in default prism styles, atomDark is a good proxy
+      default:
+        return isDark ? dracula : ghcolors;
+    }
+  };
+
+  const syntaxTheme = getSyntaxTheme();
   const transformImageUri = (uri: string) => {
     // If it's an absolute URL or data URI, return as is
     if (uri.startsWith('http://') || uri.startsWith('https://') || uri.startsWith('//') || uri.startsWith('data:')) {
@@ -48,14 +74,14 @@ export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme, fil
 
   return (
     <div className={clsx(
-      "h-full overflow-y-auto bg-white dark:bg-gray-900 preview-pane",
+      "h-full overflow-y-auto preview-pane",
       viewMode === 'preview' ? "w-full" : viewMode === 'split' ? "w-1/2" : "w-0 hidden"
     )}>
       {/* GitHub Markdown styling container */}
       <div 
         className={clsx(
-            "max-w-3xl mx-auto p-8 markdown-body",
-            theme === 'dark' ? 'markdown-body-dark' : 'markdown-body-light'
+            "mx-auto p-8 markdown-body",
+            isDark ? 'markdown-body-dark' : 'markdown-body-light'
         )}
         style={{ 
             backgroundColor: 'transparent',
@@ -71,7 +97,7 @@ export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme, fil
               const match = /language-(\w+)/.exec(className || '');
               return !inline && match ? (
                 <SyntaxHighlighter
-                  style={theme === 'dark' ? dracula : ghcolors}
+                  style={syntaxTheme}
                   language={match[1]}
                   PreTag="div"
                   customStyle={{ 
@@ -81,7 +107,7 @@ export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme, fil
                     fontSize: '0.875rem',
                     lineHeight: '1.5',
                     fontFamily: 'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                    background: theme === 'dark' ? '#1e1e1e' : '#f6f8fa',
+                    background: themeId === 'default' ? (isDark ? '#1e1e1e' : '#f6f8fa') : undefined,
                     border: 'none'
                   }}
                   codeTagProps={{

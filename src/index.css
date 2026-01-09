@@ -7,6 +7,14 @@
   body {
     @apply antialiased text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-900;
   }
+  
+  .app-container {
+    background-color: theme('colors.white');
+  }
+  
+  .dark .app-container {
+    background-color: theme('colors.gray.900');
+  }
 }
 
 /* GitHub Markdown CSS Overrides */

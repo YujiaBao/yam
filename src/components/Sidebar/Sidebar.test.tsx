@@ -7,12 +7,10 @@ describe('Sidebar', () => {
     onFileUpload: vi.fn(),
     onExportPdf: vi.fn(),
     isExporting: false,
-    theme: 'light' as const,
-    setTheme: vi.fn(),
-    font: 'sans' as const,
-    setFont: vi.fn(),
+    font: 'Sans Serif',
+    cycleFont: vi.fn(),
     fontWeight: 'normal' as const,
-    setFontWeight: vi.fn(),
+    cycleWeight: vi.fn(),
     viewMode: 'split' as const,
     setViewMode: vi.fn(),
     showSettings: false,
@@ -24,7 +22,6 @@ describe('Sidebar', () => {
     render(<Sidebar {...defaultProps} />);
     expect(screen.getByText(/Open File/i)).toBeInTheDocument();
     expect(screen.getByText(/Export PDF/i)).toBeInTheDocument();
-    expect(screen.getByText(/Dark Mode/i)).toBeInTheDocument();
     expect(screen.getByText(/Change Font/i)).toBeInTheDocument();
     expect(screen.getByText(/Weight:/i)).toBeInTheDocument();
   });
@@ -35,12 +32,10 @@ describe('Sidebar', () => {
     expect(defaultProps.onToggleSidebar).toHaveBeenCalled();
   });
 
-  it('calls setTheme when theme toggle is clicked', () => {
+  it('calls cycleFont when font toggle is clicked', () => {
     render(<Sidebar {...defaultProps} />);
-    // The button doesn't have the text, but the span inside it does.
-    // Clicking the span or the parent button should work.
-    fireEvent.click(screen.getByText(/Dark Mode/i));
-    expect(defaultProps.setTheme).toHaveBeenCalledWith('dark');
+    fireEvent.click(screen.getByText(/Change Font/i));
+    expect(defaultProps.cycleFont).toHaveBeenCalled();
   });
 
   it('shows exporting state', () => {

@@ -19,23 +19,25 @@
 
 ## ✨ Features
 
-*   **Modern UI:** Clean, glassmorphism-inspired design.
+*   **Modern UI:** Clean, focus-oriented design with theme-integrated backgrounds across the entire window.
 *   **Split View:** Real-time editing and preview side-by-side.
-*   **Theming:**
-    *   **Light/Dark Mode:** Instant toggle.
-    *   **GitHub-Style Rendering:** Mimics the official GitHub look and feel for both light and dark modes.
-    *   **Custom CSS Themes:** Built-in presets (*Solarized Light/Dark*, *GitHub*, *Dracula*, *Nord*, *Cobalt*) + full user customization.
-    *   **CSS Reference:** Built-in helper to identify selectors.
-*   **Typography:** Control font family (Sans, Serif, Mono) and weight (Light, Normal, Bold).
+*   **Advanced Theming:**
+    *   **Visual Editor:** Intuitive sliders and color pickers for Colors, Typography, Spacing, and Layout.
+    *   **Bidirectional Mapping:** Seamlessly switch between the Visual Editor and raw CSS; changes in one reflect in the other.
+    *   **Built-in Presets:** *Solarized Light/Dark*, *GitHub Light/Dark*, *Dracula*, *Nord*, *Cobalt*.
+    *   **Duplicate to Edit:** Easily customize built-in themes by duplicating them with one click.
+*   **Typography:**
+    *   **System Font Discovery:** Browse and add any font installed on your macOS system.
+    *   **Dynamic Weights:** Support for Light, Normal, and Bold weights, automatically adjusted based on font capabilities.
+    *   **Custom Font List:** Add, remove, and reorganize your preferred font families.
 *   **Rich Content:**
     *   **GFM Support:** Tables, checklists, strikethrough.
     *   **HTML Support:** Render inline HTML tags.
-    *   **Syntax Highlighting:** Beautiful code blocks with GitHub-inspired themes.
+    *   **Adaptive Syntax Highlighting:** Code blocks automatically match the active markdown theme.
     *   **Local Images:** Seamlessly load and render images from your local filesystem.
 *   **Productivity:**
     *   **PDF Export:** High-quality export with theme preservation.
     *   **File Associations:** Open `.md` files directly from Finder.
-    *   **Drag & Drop:** Open files by dropping them on the app.
     *   **Editor Shortcuts:**
         *   `Cmd + /`: Toggle comment on selected text or current line.
 
@@ -43,8 +45,9 @@
 
 The project follows a modular React architecture designed for scalability and maintainability.
 
-*   **`src/components/`**: Organized into functional directories (Sidebar, Editor, Preview, SettingsModal). Each directory contains the component, its styles, and its unit tests.
-*   **`src/hooks/`**: Custom React hooks for business logic encapsulation (e.g., `useThemes` for state management and persistence).
+*   **`src/components/`**: Organized into functional directories (Sidebar, Editor, Preview, SettingsModal). Each directory contains the component and its unit tests.
+*   **`src/hooks/`**: Custom React hooks for business logic encapsulation (e.g., `useThemes`, `useFonts`).
+*   **`src/utils/`**: Shared utilities like `cssMapper` for bidirectional theme parsing.
 *   **`src/types/`**: Centralized TypeScript interfaces and type definitions.
 *   **`src/constants/`**: App-wide configuration and theme presets.
 *   **`electron/`**: Main process logic, including IPC handlers for PDF export and file system integration.

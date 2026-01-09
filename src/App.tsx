@@ -7,83 +7,56 @@ import { Editor } from './components/Editor/Editor';
 import { Preview } from './components/Preview/Preview';
 import { SettingsModal } from './components/SettingsModal/SettingsModal';
 import { useThemes } from './hooks/useThemes';
-import type { FontType, FontWeight, ViewMode } from './types';
+import { useFonts } from './hooks/useFonts';
+import type { ViewMode } from './types';
 
 function App() {
-  const [markdown, setMarkdown] = useState<string>(`# Welcome to Yam
-
-**Yam** (Yet Another Markdown App) is a modern, minimalist editor for macOS.
-
-## Features Overview
-
-### Typography & Formatting
-You can use **bold**, *italic*, ~~strikethrough~~, or \`inline code\`.
-
-### Lists
-- [x] Task lists are supported
-- [ ] Unchecked item
-- Bullet points
-  - Nested bullets
-    - Deeply nested
-
-1. Ordered lists
-2. Are also supported
-
-### Tables
-| Feature | Support |
-| :--- | :--- |
-| GitHub Flavored | ✅ |
-| HTML Rendering | ✅ |
-| PDF Export | ✅ |
-
-### Code Blocks
-
-\`\`\`typescript
-// React Component Example
-const Greeting = ({ name }: { name: string }) => (
-  <div className="p-4 bg-indigo-100 rounded">
-    Hello, {name}!
-  </div>
-);
-\`\`\`
-
-### HTML Support
-<div style="padding: 12px; background-color: #dbeafe; color: #1e40af; border-radius: 8px; border: 1px solid #bfdbfe;">
-  <strong>HTML Support:</strong> content can be styled directly.
-</div>
-
-> "Simplicity is the ultimate sophistication."
-`);
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [font, setFont] = useState<FontType>('sans');
-  const [fontWeight, setFontWeight] = useState<FontWeight>('normal');
+  const [markdown, setMarkdown] = useState<string>("# Welcome to Yam\n\n**Yam** (Yet Another Markdown App) is a modern, minimalist editor for macOS.\n\n## Features Overview\n\n### Typography & Formatting\nYou can use **bold**, *italic*, ~~strikethrough~~, or `inline code`.\n\n### Lists\n- [x] Task lists are supported\n- [ ] Unchecked item\n- Bullet points\n  - Nested bullets\n    - Deeply nested\n\n1. Ordered lists\n2. Are also supported\n\n### Tables\n| Feature | Support |\n| :--- | :--- |\n| GitHub Flavored | ✅ |\n| HTML Rendering | ✅ |\n| PDF Export | ✅ |\n\n### Code Blocks\n\n```typescript\n// React Component Example\nconst Greeting = ({ name }: { name: string }) => (\n  <div className=\"p-4 bg-indigo-100 rounded\">\n    Hello, {name}!\n  </div>\n);\n```\n\n### HTML Support\n<div style=\"padding: 12px; background-color: #dbeafe; color: #1e40af; border-radius: 8px; border: 1px solid #bfdbfe;\">\n  <strong>HTML Support:</strong> content can be styled directly.\n</div>\n\n> \"Simplicity is the ultimate sophistication.\"");
   const [viewMode, setViewMode] = useState<ViewMode>('split');
   const [showSettings, setShowSettings] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [filePath, setFilePath] = useState<string>('');
 
+  const {
+    fonts,
+    activeFont,
+    activeFontId,
+    activeWeight,
+    setActiveFontId,
+    getSystemFonts,
+    handleCreateFont,
+    handleDeleteFont,
+    cycleFont,
+    cycleWeight
+  } = useFonts();
+
   // Custom CSS Themes Hook
   const {
     cssThemes,
     activeThemeId,
+    activeTheme,
     activeCss,
     setActiveThemeId,
     handleCssChange,
     handleCreateTheme,
+    handleDuplicateTheme,
+    handleRenameTheme,
     handleDeleteTheme,
     handleImportCss,
     isDefaultTheme
   } = useThemes();
 
+  const isDark = activeTheme.isDark;
+
   // Handle Theme
   useEffect(() => {
-    if (theme === 'dark') {
+    if (isDark) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, [theme]);
+  }, [isDark]);
 
   // Handle incoming file from Electron (e.g. "Open With")
   useEffect(() => {
@@ -138,12 +111,6 @@ const Greeting = ({ name }: { name: string }) => (
     }
   };
 
-  const fonts = {
-    sans: 'font-sans',
-    serif: 'font-serif',
-    mono: 'font-mono'
-  };
-
   const fontWeights = {
     light: 'font-light',
     normal: 'font-normal',
@@ -151,7 +118,10 @@ const Greeting = ({ name }: { name: string }) => (
   };
 
   return (
-    <div className={`h-screen w-screen flex flex-col overflow-hidden bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 ${fonts[font]} ${fontWeights[fontWeight]}`}>
+    <div 
+      className={`h-screen w-screen flex flex-col overflow-hidden text-gray-900 dark:text-gray-100 app-container ${fontWeights[activeWeight]}`}
+      style={{ fontFamily: activeFont.family }}
+    > 
       
       {/* Inject Custom CSS */}
       <style>{activeCss}</style>
@@ -176,12 +146,10 @@ const Greeting = ({ name }: { name: string }) => (
             onFileUpload={handleFileUpload}
             onExportPdf={handleExportPdf}
             isExporting={isExporting}
-            theme={theme}
-            setTheme={setTheme}
-            font={font}
-            setFont={setFont}
-            fontWeight={fontWeight}
-            setFontWeight={setFontWeight}
+            font={activeFont.name}
+            cycleFont={cycleFont}
+            fontWeight={activeWeight}
+            cycleWeight={cycleWeight}
             viewMode={viewMode}
             setViewMode={setViewMode}
             showSettings={showSettings}
@@ -200,7 +168,8 @@ const Greeting = ({ name }: { name: string }) => (
           <Preview 
             markdown={markdown}
             viewMode={viewMode}
-            theme={theme}
+            isDark={!!isDark}
+            themeId={activeThemeId}
             filePath={filePath}
           />
 
@@ -213,9 +182,17 @@ const Greeting = ({ name }: { name: string }) => (
               setActiveThemeId={setActiveThemeId}
               onCssChange={handleCssChange}
               onCreateTheme={handleCreateTheme}
+              onDuplicateTheme={handleDuplicateTheme}
+              onRenameTheme={handleRenameTheme}
               onDeleteTheme={handleDeleteTheme}
               onImportCss={handleImportCss}
               isDefaultTheme={isDefaultTheme}
+              fonts={fonts}
+              activeFontId={activeFontId}
+              setActiveFontId={setActiveFontId}
+              getSystemFonts={getSystemFonts}
+              onCreateFont={handleCreateFont}
+              onDeleteFont={handleDeleteFont}
             />
           )}
         </main>

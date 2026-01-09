@@ -4,7 +4,23 @@ export const DEFAULT_THEMES: Theme[] = [
   {
     id: 'default',
     name: 'Default',
-    css: ''
+    css: '',
+    isDark: false
+  },
+  {
+    id: 'github-light',
+    name: 'GitHub Light',
+    css: `
+      body { background-color: #ffffff !important; }
+      .markdown-body { 
+        color: #24292f !important;
+        --color-canvas-default: #ffffff !important;
+        --color-fg-default: #24292f !important;
+      }
+      .markdown-body h1, .markdown-body h2 { border-bottom: 1px solid #d0d7de !important; }
+      .markdown-body a { color: #0969da !important; }
+    `,
+    isDark: false
   },
   {
     id: 'solarized-light',
@@ -24,7 +40,8 @@ export const DEFAULT_THEMES: Theme[] = [
       .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: var(--solarized-hl) !important; }
       .markdown-body a { color: #268bd2 !important; }
       .markdown-body code { color: #d33682 !important; }
-    `
+    `,
+    isDark: false
   },
   {
     id: 'solarized-dark',
@@ -44,7 +61,8 @@ export const DEFAULT_THEMES: Theme[] = [
       .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: var(--solarized-hl) !important; }
       .markdown-body a { color: #2aa198 !important; }
       .markdown-body code { color: #859900 !important; }
-    `
+    `,
+    isDark: true
   },
   {
     id: 'github-dark',
@@ -58,7 +76,8 @@ export const DEFAULT_THEMES: Theme[] = [
       }
       .markdown-body h1, .markdown-body h2 { border-bottom: 1px solid #21262d !important; }
       .markdown-body a { color: #58a6ff !important; }
-    `
+    `,
+    isDark: true
   },
   {
     id: 'dracula',
@@ -74,7 +93,8 @@ export const DEFAULT_THEMES: Theme[] = [
       .markdown-body a { color: #8be9fd !important; }
       .markdown-body code { color: #ff79c6 !important; }
       .markdown-body blockquote { border-left-color: #bd93f9 !important; color: #f1fa8c !important; }
-    `
+    `,
+    isDark: true
   },
   {
     id: 'nord',
@@ -89,7 +109,8 @@ export const DEFAULT_THEMES: Theme[] = [
       .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: #88c0d0 !important; }
       .markdown-body a { color: #81a1c1 !important; }
       .markdown-body code { color: #ebcb8b !important; }
-    `
+    `,
+    isDark: true
   },
   {
     id: 'cobalt',
@@ -103,6 +124,7 @@ export const DEFAULT_THEMES: Theme[] = [
       }
       .markdown-body h1, .markdown-body h2 { color: #ffc600 !important; }
       .markdown-body a { color: #0088ff !important; }
-    `
+    `,
+    isDark: true
   }
 ];

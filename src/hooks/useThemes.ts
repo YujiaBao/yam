@@ -4,12 +4,8 @@ import { DEFAULT_THEMES } from '../constants/themes';
 
 /**
  * Custom hook for managing application CSS themes.
- * Handles persistence to localStorage and separates default presets from user-created themes.
- * 
- * @returns An object containing theme state and management functions
  */
 export const useThemes = () => {
-  // Store only user-created themes in localStorage
   const [userThemes, setUserThemes] = useState<Theme[]>(() => {
     const saved = localStorage.getItem('yam_user_themes');
     return saved ? JSON.parse(saved) : [];
@@ -19,14 +15,10 @@ export const useThemes = () => {
     return localStorage.getItem('yam_active_theme_id') || 'default';
   });
 
-  // Combine defaults and user themes
   const allThemes = [...DEFAULT_THEMES, ...userThemes];
-
-  // Current active theme object
   const activeTheme = allThemes.find(t => t.id === activeThemeId) || DEFAULT_THEMES[0];
   const activeCss = activeTheme.css;
 
-  // Persist user themes
   useEffect(() => {
     localStorage.setItem('yam_user_themes', JSON.stringify(userThemes));
   }, [userThemes]);
@@ -36,7 +28,6 @@ export const useThemes = () => {
   }, [activeThemeId]);
 
   const handleCssChange = (newCss: string) => {
-    // Only allow editing if it's a user theme
     if (userThemes.some(t => t.id === activeThemeId)) {
       setUserThemes(themes => themes.map(t =>
         t.id === activeThemeId ? { ...t, css: newCss } : t
@@ -51,11 +42,33 @@ export const useThemes = () => {
     const newTheme: Theme = {
       id: `user-${Date.now()}`,
       name,
-      css: activeCss // Start with current CSS
+      css: activeCss,
+      isDark: activeTheme.isDark
     };
 
     setUserThemes([...userThemes, newTheme]);
     setActiveThemeId(newTheme.id);
+  };
+
+  const handleDuplicateTheme = (id: string) => {
+    const themeToDuplicate = allThemes.find(t => t.id === id);
+    if (!themeToDuplicate) return;
+
+    const newTheme: Theme = {
+      id: `user-${Date.now()}`,
+      name: `${themeToDuplicate.name} (Copy)`,
+      css: themeToDuplicate.css,
+      isDark: themeToDuplicate.isDark
+    };
+
+    setUserThemes([...userThemes, newTheme]);
+    setActiveThemeId(newTheme.id);
+  };
+
+  const handleRenameTheme = (id: string, newName: string) => {
+    setUserThemes(themes => themes.map(t =>
+      t.id === id ? { ...t, name: newName } : t
+    ));
   };
 
   const handleDeleteTheme = () => {
@@ -78,7 +91,8 @@ export const useThemes = () => {
         const newTheme: Theme = {
           id: `user-${Date.now()}`,
           name,
-          css: text
+          css: text,
+          isDark: text.includes('dark') || text.includes('background-color: #0') || text.includes('background-color: #1')
         };
         setUserThemes([...userThemes, newTheme]);
         setActiveThemeId(newTheme.id);
@@ -91,10 +105,13 @@ export const useThemes = () => {
   return {
     cssThemes: allThemes,
     activeThemeId,
+    activeTheme,
     activeCss,
     setActiveThemeId,
     handleCssChange,
     handleCreateTheme,
+    handleDuplicateTheme,
+    handleRenameTheme,
     handleDeleteTheme,
     handleImportCss,
     isDefaultTheme: DEFAULT_THEMES.some(t => t.id === activeThemeId)

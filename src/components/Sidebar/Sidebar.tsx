@@ -1,8 +1,6 @@
 import React from 'react';
 import {
   FileText,
-  Moon,
-  Sun,
   Type,
   Settings,
   Columns,
@@ -13,18 +11,16 @@ import {
   PanelLeftClose
 } from 'lucide-react';
 import clsx from 'clsx';
-import type { FontType, FontWeight, ViewMode } from '../../types';
+import type { FontWeight, ViewMode } from '../../types';
 
 interface SidebarProps {
   onFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onExportPdf: () => void;
   isExporting: boolean;
-  theme: 'light' | 'dark';
-  setTheme: (theme: 'light' | 'dark') => void;
-  font: FontType;
-  setFont: (font: React.SetStateAction<FontType>) => void;
+  font: string;
+  cycleFont: () => void;
   fontWeight: FontWeight;
-  setFontWeight: (weight: React.SetStateAction<FontWeight>) => void;
+  cycleWeight: () => void;
   viewMode: ViewMode;
   setViewMode: (mode: ViewMode) => void;
   showSettings: boolean;
@@ -38,12 +34,10 @@ interface SidebarProps {
  * @param onFileUpload - Handler for opening local markdown files
  * @param onExportPdf - Handler for exporting the current view to PDF
  * @param isExporting - Loading state during PDF generation
- * @param theme - Current application theme ('light' | 'dark')
- * @param setTheme - Function to toggle the theme
- * @param font - Current font family setting
- * @param setFont - Function to cycle through font families
+ * @param font - Current font name
+ * @param cycleFont - Function to cycle through available fonts
  * @param fontWeight - Current font weight setting
- * @param setFontWeight - Function to cycle through font weights
+ * @param cycleWeight - Function to cycle through available weights for current font
  * @param viewMode - Current view mode ('split' | 'edit' | 'preview')
  * @param setViewMode - Function to change the view mode
  * @param showSettings - Visibility state of the settings modal
@@ -54,12 +48,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onFileUpload,
   onExportPdf,
   isExporting,
-  theme,
-  setTheme,
   font,
-  setFont,
+  cycleFont,
   fontWeight,
-  setFontWeight,
+  cycleWeight,
   viewMode,
   setViewMode,
   showSettings,
@@ -67,7 +59,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onToggleSidebar
 }) => {
   return (
-    <aside className="w-16 flex-shrink-0 flex flex-col items-center py-4 border-r border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 z-10 pt-2">
+    <aside className="w-16 flex-shrink-0 flex flex-col items-center py-4 border-r border-gray-200 dark:border-gray-800 z-10 pt-2">
       {/* Collapse Toggle */}
       <button
         onClick={onToggleSidebar}
@@ -101,28 +93,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         <div className="w-full h-px bg-gray-200 dark:bg-gray-800 my-1" />
 
-        {/* Theme Toggle */}
-        <button
-          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-          className="p-3 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors group relative flex justify-center"
-        >
-          {theme === 'light' ? (
-            <Moon size={20} className="text-gray-500 group-hover:text-indigo-600" />
-          ) : (
-            <Sun size={20} className="text-gray-400 group-hover:text-yellow-400" />
-          )}
-          <span className="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
-            {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
-          </span>
-        </button>
-
         {/* Font Toggle */}
         <button
-          onClick={() => setFont(current => {
-            if (current === 'sans') return 'serif';
-            if (current === 'serif') return 'mono';
-            return 'sans';
-          })}
+          onClick={cycleFont}
           className="p-3 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors group relative flex justify-center"
         >
           <Type size={20} className="text-gray-500 group-hover:text-indigo-600 dark:text-gray-400 dark:group-hover:text-indigo-400" />
@@ -133,11 +106,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Font Weight Toggle */}
         <button
-          onClick={() => setFontWeight(current => {
-            if (current === 'light') return 'normal';
-            if (current === 'normal') return 'bold';
-            return 'light';
-          })}
+          onClick={cycleWeight}
           className="p-3 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors group relative flex justify-center"
         >
           <Bold size={20} className={clsx("text-gray-500 group-hover:text-indigo-600 dark:text-gray-400 dark:group-hover:text-indigo-400", fontWeight === 'bold' && "text-indigo-600 font-bold", fontWeight === 'light' && "font-light")} />

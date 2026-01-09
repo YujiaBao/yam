@@ -12,12 +12,7 @@ describe('App', () => {
   it('renders the sidebar buttons', () => {
     render(<App />);
     expect(screen.getByText(/Open File/i)).toBeInTheDocument();
-    
-    // "Dark Mode" might appear in the markdown text too, so we check for at least one instance
-    const darkModes = screen.getAllByText(/Dark Mode/i);
-    expect(darkModes.length).toBeGreaterThan(0);
-    
-    // Check for "Export PDF" button
     expect(screen.getByText(/Export PDF/i)).toBeInTheDocument();
+    expect(screen.getByText(/Change Font/i)).toBeInTheDocument();
   });
 });
