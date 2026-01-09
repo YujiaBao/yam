@@ -5,7 +5,7 @@ import rehypeRaw from 'rehype-raw';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { ghcolors, dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import clsx from 'clsx';
-import type { ViewMode } from '../types';
+import type { ViewMode } from '../../types';
 
 interface PreviewProps {
   markdown: string;
@@ -14,6 +14,15 @@ interface PreviewProps {
   filePath?: string;
 }
 
+/**
+ * Markdown Preview component.
+ * Renders markdown to HTML with GitHub styling, code syntax highlighting, and local image support.
+ * 
+ * @param markdown - The raw markdown string to render
+ * @param viewMode - Current view mode
+ * @param theme - Current application theme
+ * @param filePath - Path of the currently open file (used for relative image resolution)
+ */
 export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme, filePath }) => {
   const transformImageUri = (uri: string) => {
     // If it's an absolute URL or data URI, return as is

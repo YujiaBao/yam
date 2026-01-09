@@ -39,9 +39,13 @@
 
 ## 🛠️ Architecture
 
-*   **`src/components/`**: Modular UI (Sidebar, Editor, Preview, Settings).
-*   **`src/hooks/`**: Logic encapsulation (e.g., `useThemes`).
-*   **`electron/`**: Main process (Window management, IPC, native dialogs).
+The project follows a modular React architecture designed for scalability and maintainability.
+
+*   **`src/components/`**: Organized into functional directories (Sidebar, Editor, Preview, SettingsModal). Each directory contains the component, its styles, and its unit tests.
+*   **`src/hooks/`**: Custom React hooks for business logic encapsulation (e.g., `useThemes` for state management and persistence).
+*   **`src/types/`**: Centralized TypeScript interfaces and type definitions.
+*   **`src/constants/`**: App-wide configuration and theme presets.
+*   **`electron/`**: Main process logic, including IPC handlers for PDF export and file system integration.
 
 ## 🚀 Development
 
@@ -79,6 +83,8 @@ npm run dist
 Artifacts will be in the `release/` directory.
 
 ### Testing
+
+The project uses [Vitest](https://vitest.dev/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) for comprehensive testing.
 
 ```bash
 npm test

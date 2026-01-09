@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import type { ViewMode } from '../types';
+import type { ViewMode } from '../../types';
 
 interface EditorProps {
   markdown: string;
@@ -8,6 +8,13 @@ interface EditorProps {
   viewMode: ViewMode;
 }
 
+/**
+ * Markdown Editor component.
+ * 
+ * @param markdown - The raw markdown string to edit
+ * @param setMarkdown - Function to update the markdown content
+ * @param viewMode - Current view mode (used to determine visibility and width)
+ */
 export const Editor: React.FC<EditorProps> = ({ markdown, setMarkdown, viewMode }) => {
   return (
     <div className={clsx(

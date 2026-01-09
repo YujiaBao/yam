@@ -2,6 +2,12 @@ import { useState, useEffect } from 'react';
 import type { Theme } from '../types';
 import { DEFAULT_THEMES } from '../constants/themes';
 
+/**
+ * Custom hook for managing application CSS themes.
+ * Handles persistence to localStorage and separates default presets from user-created themes.
+ * 
+ * @returns An object containing theme state and management functions
+ */
 export const useThemes = () => {
   // Store only user-created themes in localStorage
   const [userThemes, setUserThemes] = useState<Theme[]>(() => {

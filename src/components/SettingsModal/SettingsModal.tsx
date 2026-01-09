@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { X, Upload, Plus, Trash2, HelpCircle, Lock } from 'lucide-react';
 import clsx from 'clsx';
-import type { Theme } from '../types';
-import { DEFAULT_THEMES } from '../constants/themes';
+import type { Theme } from '../../types';
+import { DEFAULT_THEMES } from '../../constants/themes';
 
 interface SettingsModalProps {
   onClose: () => void;
@@ -30,6 +30,20 @@ const CSS_HELP = [
   { selector: 'body', desc: 'App background' },
 ];
 
+/**
+ * Modal for application settings and custom CSS theme management.
+ * 
+ * @param onClose - Function to close the modal
+ * @param cssThemes - List of all available CSS themes
+ * @param activeThemeId - ID of the currently active theme
+ * @param activeCss - Raw CSS string of the active theme
+ * @param setActiveThemeId - Function to select a theme
+ * @param onCssChange - Function to update the CSS of the active theme
+ * @param onCreateTheme - Function to create a new theme
+ * @param onDeleteTheme - Function to delete the active theme
+ * @param onImportCss - Handler for importing CSS from a local file
+ * @param isDefaultTheme - Boolean indicating if the active theme is a read-only preset
+ */
 export const SettingsModal: React.FC<SettingsModalProps> = ({
   onClose,
   cssThemes,

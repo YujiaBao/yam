@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import {
   PanelLeft
 } from 'lucide-react';
-import { Sidebar } from './components/Sidebar';
-import { Editor } from './components/Editor';
-import { Preview } from './components/Preview';
-import { SettingsModal } from './components/SettingsModal';
+import { Sidebar } from './components/Sidebar/Sidebar';
+import { Editor } from './components/Editor/Editor';
+import { Preview } from './components/Preview/Preview';
+import { SettingsModal } from './components/SettingsModal/SettingsModal';
 import { useThemes } from './hooks/useThemes';
 import type { FontType, FontWeight, ViewMode } from './types';
 

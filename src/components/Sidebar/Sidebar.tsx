@@ -13,7 +13,7 @@ import {
   PanelLeftClose
 } from 'lucide-react';
 import clsx from 'clsx';
-import type { FontType, FontWeight, ViewMode } from '../types';
+import type { FontType, FontWeight, ViewMode } from '../../types';
 
 interface SidebarProps {
   onFileUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -32,6 +32,24 @@ interface SidebarProps {
   onToggleSidebar: () => void;
 }
 
+/**
+ * Sidebar component for application navigation and controls.
+ * 
+ * @param onFileUpload - Handler for opening local markdown files
+ * @param onExportPdf - Handler for exporting the current view to PDF
+ * @param isExporting - Loading state during PDF generation
+ * @param theme - Current application theme ('light' | 'dark')
+ * @param setTheme - Function to toggle the theme
+ * @param font - Current font family setting
+ * @param setFont - Function to cycle through font families
+ * @param fontWeight - Current font weight setting
+ * @param setFontWeight - Function to cycle through font weights
+ * @param viewMode - Current view mode ('split' | 'edit' | 'preview')
+ * @param setViewMode - Function to change the view mode
+ * @param showSettings - Visibility state of the settings modal
+ * @param setShowSettings - Function to toggle settings modal
+ * @param onToggleSidebar - Handler for collapsing the sidebar
+ */
 export const Sidebar: React.FC<SidebarProps> = ({
   onFileUpload,
   onExportPdf,
