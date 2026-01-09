@@ -176,7 +176,7 @@ const LandingPage: React.FC = () => {
           <p className="text-sm">© 2026 Yujia Bao. Built with React & Tailwind CSS.</p>
           <div className="flex gap-8 text-sm font-bold">
             <a href="https://github.com/YujiaBao/yam" className="hover:text-gray-900 transition-colors uppercase tracking-widest text-[10px]">GitHub</a>
-            <a href="https://github.com/YujiaBao/yam/blob/master/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors uppercase tracking-widest text-[10px]">Apache 2.0</a>
+            <a href="https://github.com/YujiaBao/yam/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors uppercase tracking-widest text-[10px]">Apache 2.0</a>
           </div>
         </div>
       </footer>
