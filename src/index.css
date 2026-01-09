@@ -20,13 +20,44 @@
   font-family: inherit !important;
 }
 
-/* Fix for tables and other elements inheriting dark mode styles incorrectly */
-.markdown-body-light {
-    --color-canvas-default: transparent !important;
+/* Remove default pre styling to avoid double-boxing with SyntaxHighlighter */
+.markdown-body pre {
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  font-weight: inherit !important;
+}
+
+/* Fix for tables and other elements inheriting dark mode styles incorrectly */
+/* We force light mode variables when in light mode */
+.markdown-body-light {
+    --color-canvas-default: #ffffff !important;
+    --color-canvas-subtle: #f6f8fa !important;
+    --color-border-default: #d0d7de !important;
+    --color-border-muted: #d8dee4 !important;
+    --color-neutral-muted: rgba(175, 184, 193, 0.2) !important;
+    --color-accent-fg: #0969da !important;
+    --color-fg-default: #24292f !important;
+}
+
+/* We force dark mode variables when in dark mode */
 .markdown-body-dark {
-    --color-canvas-default: transparent !important;
+    --color-canvas-default: #0d1117 !important;
+    --color-canvas-subtle: #161b22 !important;
+    --color-border-default: #30363d !important;
+    --color-border-muted: #21262d !important;
+    --color-neutral-muted: rgba(110, 118, 129, 0.4) !important;
+    --color-accent-fg: #58a6ff !important;
+    --color-fg-default: #c9d1d9 !important;
 }
 
 @media print {
