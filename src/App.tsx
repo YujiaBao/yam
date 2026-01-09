@@ -36,6 +36,16 @@ function App() {
     }
   }, [theme]);
 
+  // Handle incoming file from Electron (e.g. "Open With")
+  useEffect(() => {
+    if (window.electron && window.electron.onFileOpened) {
+      const unsubscribe = window.electron.onFileOpened((content) => {
+        setMarkdown(content);
+      });
+      return () => unsubscribe();
+    }
+  }, []);
+
   // Handle File Open
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -117,6 +127,7 @@ function App() {
           <Preview 
             markdown={markdown}
             viewMode={viewMode}
+            theme={theme}
           />
 
           {showSettings && (

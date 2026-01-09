@@ -2,6 +2,32 @@ import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'path';
 import fs from 'fs';
 
+// Global reference to the main window
+let mainWindow: BrowserWindow | null = null;
+// Store file path if app is opened via file association
+let fileToOpen: string | null = null;
+
+// Handle file associations on macOS
+app.on('open-file', (event, path) => {
+  event.preventDefault();
+  fileToOpen = path;
+  
+  if (mainWindow) {
+    // If window is already open, send the file content
+    openFile(mainWindow, fileToOpen);
+  }
+});
+
+function openFile(win: BrowserWindow, filePath: string) {
+  fs.readFile(filePath, 'utf-8', (err, data) => {
+    if (err) {
+      console.error('Failed to read file', err);
+      return;
+    }
+    win.webContents.send('file-opened', data);
+  });
+}
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -9,7 +35,7 @@ if (require('electron-squirrel-startup')) {
 
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     titleBarStyle: 'hiddenInset', // Mac-like nice title bar
@@ -29,6 +55,18 @@ const createWindow = () => {
   } else {
     mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
   }
+
+  // When window is ready, check if we have a file to open
+  mainWindow.webContents.on('did-finish-load', () => {
+    if (fileToOpen && mainWindow) {
+      openFile(mainWindow, fileToOpen);
+      fileToOpen = null; // Clear it
+    }
+  });
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
 };
 
 // Register IPC handlers once

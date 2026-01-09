@@ -9,6 +9,7 @@ declare module 'react' {
 
 interface ElectronAPI {
   exportPdf: () => Promise<{ success?: boolean; path?: string; error?: string; canceled?: boolean }>;
+  onFileOpened: (callback: (content: string) => void) => () => void;
 }
 
 declare global {
