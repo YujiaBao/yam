@@ -17,16 +17,14 @@ interface PreviewProps {
 export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme, filePath }) => {
   const transformImageUri = (uri: string) => {
     // If it's an absolute URL or data URI, return as is
-    if (/^https?:\]\/\//.test(uri) || /^data:/.test(uri)) {
+    if (uri.startsWith('http://') || uri.startsWith('https://') || uri.startsWith('//') || uri.startsWith('data:')) {
       return uri;
     }
 
     // If we have a file path, try to resolve relative paths
     if (filePath && !uri.startsWith('/')) {
       // Get directory of current file
-      const dir = filePath.substring(0, filePath.lastIndexOf('/')); // Simplified, assumes macOS/Linux paths
-      // Construct yam-local URI
-      // We need to encode the path components
+      const dir = filePath.substring(0, filePath.lastIndexOf('/'));
       const absolutePath = `${dir}/${uri}`;
       return `yam-local://${absolutePath}`;
     }
@@ -44,7 +42,17 @@ export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme, fil
       "h-full overflow-y-auto bg-white dark:bg-gray-900 preview-pane",
       viewMode === 'preview' ? "w-full" : viewMode === 'split' ? "w-1/2" : "w-0 hidden"
     )}>
-      <div className="max-w-3xl mx-auto p-8 prose prose-sm sm:prose-base dark:prose-invert prose-slate prose-a:text-indigo-600 hover:prose-a:text-indigo-500 prose-headings:font-[inherit] prose-pre:!bg-transparent prose-pre:!p-0 prose-pre:!m-0 prose-li:my-0 prose-ul:my-2 prose-ol:my-2">
+      {/* GitHub Markdown styling container */}
+      <div 
+        className={clsx(
+            "max-w-3xl mx-auto p-8 markdown-body",
+            theme === 'dark' ? 'markdown-body-dark' : 'markdown-body-light'
+        )}
+        style={{ 
+            backgroundColor: 'transparent',
+            minHeight: '100%'
+        }}
+      >
         <ReactMarkdown 
           remarkPlugins={[remarkGfm]} 
           rehypePlugins={[rehypeRaw]}
@@ -57,13 +65,15 @@ export const Preview: React.FC<PreviewProps> = ({ markdown, viewMode, theme, fil
                   style={theme === 'dark' ? dracula : ghcolors}
                   language={match[1]}
                   PreTag="div"
-                  customStyle={{
-                    margin: '1.5em 0',
-                    borderRadius: '0.8rem',
+                  customStyle={{ 
+                    margin: '1.5em 0', 
+                    borderRadius: '0', 
                     padding: '1.25em',
                     fontSize: '0.875rem',
                     lineHeight: '1.5',
-                    fontFamily: 'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+                    fontFamily: 'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                    background: theme === 'dark' ? '#1e1e1e' : '#f6f8fa',
+                    border: 'none'
                   }}
                   codeTagProps={{
                     style: {

@@ -17,9 +17,7 @@ function App() {
 ## Features Overview
 
 ### Typography & Formatting
-You can use **bold**, *italic*, ~~strikethrough~~, or 
-code
-.
+You can use **bold**, *italic*, ~~strikethrough~~, or \`inline code\`.
 
 ### Lists
 - [x] Task lists are supported
@@ -158,11 +156,11 @@ const Greeting = ({ name }: { name: string }) => (
       <style>{activeCss}</style>
 
       {/* Draggable Title Bar Area for macOS */}
-      <div className="h-8 w-full bg-transparent flex-shrink-0 drag-region flex items-center px-2" style={{ WebkitAppRegion: 'drag' }}>
+      <div className="h-[38px] w-full bg-transparent flex-shrink-0 drag-region flex items-center px-2" style={{ WebkitAppRegion: 'drag' }}>
         {!isSidebarOpen && (
           <button 
             onClick={() => setIsSidebarOpen(true)}
-            className="p-1 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors ml-16 no-drag z-50"
+            className="p-1 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 transition-colors ml-[72px] no-drag z-50"
             style={{ WebkitAppRegion: 'no-drag' }}
             title="Show Sidebar"
           >
