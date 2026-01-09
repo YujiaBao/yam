@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "author": "Yujia Bao",
   "description": "Yet Another Markdown app",
+  "license": "Apache-2.0",
   "main": "dist-electron/main.js",
   "scripts": {
     "dev:vite": "vite",

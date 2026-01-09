@@ -88,4 +88,4 @@ Place a 512x512 PNG file named `icon.png` in the `build/` directory before runni
 
 ## License
 
-MIT
+Apache-2.0
