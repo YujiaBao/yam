@@ -2,43 +2,21 @@ import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'path';
 import fs from 'fs';
 
-// Global reference to the main window
-let mainWindow: BrowserWindow | null = null;
-// Store file path if app is opened via file association
-let fileToOpen: string | null = null;
-
-// Handle file associations on macOS
-app.on('open-file', (event, path) => {
-  event.preventDefault();
-  fileToOpen = path;
-  
-  if (mainWindow) {
-    // If window is already open, send the file content
-    openFile(mainWindow, fileToOpen);
-  }
-});
-
-function openFile(win: BrowserWindow, filePath: string) {
-  fs.readFile(filePath, 'utf-8', (err, data) => {
-    if (err) {
-      console.error('Failed to read file', err);
-      return;
-    }
-    win.webContents.send('file-opened', data);
-  });
-}
+// Maps to track open files
+// Key: Absolute file path, Value: Window ID
+const openFiles = new Map<string, number>();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const createWindow = () => {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
+// Function to create a new window
+const createWindow = (filePath?: string) => {
+  const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
-    titleBarStyle: 'hiddenInset', // Mac-like nice title bar
+    titleBarStyle: 'hiddenInset',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -46,7 +24,6 @@ const createWindow = () => {
     },
   });
 
-  // Check if we are in dev mode
   const isDev = process.env.NODE_ENV === 'development';
 
   if (isDev) {
@@ -56,18 +33,61 @@ const createWindow = () => {
     mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
   }
 
-  // When window is ready, check if we have a file to open
-  mainWindow.webContents.on('did-finish-load', () => {
-    if (fileToOpen && mainWindow) {
-      openFile(mainWindow, fileToOpen);
-      fileToOpen = null; // Clear it
+  // If a file path is provided, load it when the window is ready
+  if (filePath) {
+    // Track this file
+    openFiles.set(filePath, mainWindow.id);
+    mainWindow.setRepresentedFilename(filePath);
+
+    mainWindow.webContents.on('did-finish-load', () => {
+      fs.readFile(filePath, 'utf-8', (err, data) => {
+        if (err) {
+          console.error('Failed to read file', err);
+          return;
+        }
+        mainWindow.webContents.send('file-opened', data);
+      });
+    });
+  }
+
+  // Cleanup on close
+  mainWindow.on('closed', () => {
+    // Remove from map if it exists
+    if (filePath) {
+      openFiles.delete(filePath);
     }
   });
 
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
+  return mainWindow;
 };
+
+// Function to handle opening a file (either focus existing or create new)
+const handleOpenFile = (filePath: string) => {
+  const existingWindowId = openFiles.get(filePath);
+  
+  if (existingWindowId) {
+    const existingWindow = BrowserWindow.fromId(existingWindowId);
+    if (existingWindow) {
+      if (existingWindow.isMinimized()) existingWindow.restore();
+      existingWindow.focus();
+      return;
+    }
+  }
+
+  createWindow(filePath);
+};
+
+// Global queue for files opened before app is ready
+let fileOpenQueue: string[] = [];
+
+app.on('open-file', (event, path) => {
+  event.preventDefault();
+  if (app.isReady()) {
+    handleOpenFile(path);
+  } else {
+    fileOpenQueue.push(path);
+  }
+});
 
 // Register IPC handlers once
 ipcMain.handle('export-pdf', async (event) => {
@@ -96,14 +116,18 @@ ipcMain.handle('export-pdf', async (event) => {
   return { canceled: true };
 });
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on('ready', () => {
+  // Process queue
+  if (fileOpenQueue.length > 0) {
+    fileOpenQueue.forEach(path => handleOpenFile(path));
+    fileOpenQueue = [];
+  } else {
+    // Open an empty window if no files requested
+    createWindow();
+  }
+});
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+// Quit when all windows are closed, except on macOS.
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
@@ -111,8 +135,6 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
