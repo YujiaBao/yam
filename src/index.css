@@ -60,14 +60,26 @@
   height: 0.9em !important;
 }
 
-/* Ensure table font size matches normal text */
+/* Ensure table font size matches normal text and backgrounds follow theme */
 .markdown-body table {
   font-size: 1em !important;
+  background-color: transparent !important;
+}
+
+.markdown-body table tr {
+  background-color: transparent !important;
+  border-top: 1px solid var(--color-border-muted) !important;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: var(--color-canvas-subtle) !important;
 }
 
 .markdown-body table th,
 .markdown-body table td {
   font-size: 1em !important;
+  border: 1px solid var(--color-border-default) !important;
+  background-color: transparent !important;
 }
 
 /* Remove default pre styling to avoid double-boxing with SyntaxHighlighter */
@@ -122,21 +134,6 @@
     --color-neutral-muted: rgba(110, 118, 129, 0.4);
     --color-accent-fg: #58a6ff;
     --color-fg-default: #c9d1d9;
-}
-
-/* Hard override for table elements in light mode */
-.markdown-body-light table tr {
-  background-color: #ffffff !important;
-}
-
-.markdown-body-light table tr:nth-child(2n) {
-  background-color: #f6f8fa !important;
-}
-
-.markdown-body-light table th,
-.markdown-body-light table td {
-  border-color: #d0d7de !important;
-  color: #24292f !important;
 }
 
 /* Fix for dark checkboxes in light mode */

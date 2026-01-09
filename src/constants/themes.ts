@@ -15,6 +15,7 @@ export const DEFAULT_THEMES: Theme[] = [
       .markdown-body { 
         color: #24292f !important;
         --color-canvas-default: #ffffff !important;
+        --color-canvas-subtle: #f6f8fa !important;
         --color-fg-default: #24292f !important;
       }
       .markdown-body h1, .markdown-body h2 { border-bottom: 1px solid #d0d7de !important; }
@@ -35,6 +36,7 @@ export const DEFAULT_THEMES: Theme[] = [
       .markdown-body { 
         color: var(--solarized-fg) !important;
         --color-canvas-default: var(--solarized-bg) !important;
+        --color-canvas-subtle: var(--solarized-bg) !important;
         --color-fg-default: var(--solarized-fg) !important;
       }
       .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: var(--solarized-hl) !important; }
@@ -56,6 +58,7 @@ export const DEFAULT_THEMES: Theme[] = [
       .markdown-body { 
         color: var(--solarized-fg) !important;
         --color-canvas-default: var(--solarized-bg) !important;
+        --color-canvas-subtle: var(--solarized-bg) !important;
         --color-fg-default: var(--solarized-fg) !important;
       }
       .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: var(--solarized-hl) !important; }
@@ -72,6 +75,7 @@ export const DEFAULT_THEMES: Theme[] = [
       .markdown-body { 
         color: #c9d1d9 !important;
         --color-canvas-default: #0d1117 !important;
+        --color-canvas-subtle: #161b22 !important;
         --color-fg-default: #c9d1d9 !important;
       }
       .markdown-body h1, .markdown-body h2 { border-bottom: 1px solid #21262d !important; }
@@ -87,6 +91,7 @@ export const DEFAULT_THEMES: Theme[] = [
       .markdown-body { 
         color: #f8f8f2 !important;
         --color-canvas-default: #282a36 !important;
+        --color-canvas-subtle: #282a36 !important;
         --color-fg-default: #f8f8f2 !important;
       }
       .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: #bd93f9 !important; }
@@ -104,6 +109,7 @@ export const DEFAULT_THEMES: Theme[] = [
       .markdown-body { 
         color: #d8dee9 !important;
         --color-canvas-default: #2e3440 !important;
+        --color-canvas-subtle: #2e3440 !important;
         --color-fg-default: #d8dee9 !important;
       }
       .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: #88c0d0 !important; }
@@ -120,6 +126,7 @@ export const DEFAULT_THEMES: Theme[] = [
       .markdown-body { 
         color: #ffffff !important;
         --color-canvas-default: #193549 !important;
+        --color-canvas-subtle: #193549 !important;
         --color-fg-default: #ffffff !important;
       }
       .markdown-body h1, .markdown-body h2 { color: #ffc600 !important; }

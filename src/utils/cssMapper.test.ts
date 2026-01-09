@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseCss, generateCss } from './cssMapper';
+import { parseCss, generateCss, scopeCss } from './cssMapper';
 import type { VisualSettings } from '../types';
 
 describe('cssMapper', () => {
@@ -61,8 +61,6 @@ describe('cssMapper', () => {
     `;
     
     const settings = parseCss(solarizedDarkCss);
-    // Since we don't resolve var() yet, we expect fallbacks or the literal 'var(...)'
-    // Actually, my current parseCss tries to skip var()
     expect(settings.linkColor.toLowerCase()).toBe('#2aa198');
     expect(settings.codeColor.toLowerCase()).toBe('#859900');
   });
@@ -71,5 +69,26 @@ describe('cssMapper', () => {
     const css = '.markdown-body { font-size: 20px !important; }';
     const settings = parseCss(css);
     expect(settings.fontSize).toBe('20px');
+  });
+
+  describe('scopeCss', () => {
+    it('scopes body and root selectors correctly', () => {
+      const css = 'body { background: #000; } :root { --var: #fff; }';
+      const scoped = scopeCss(css, '#root');
+      expect(scoped).toContain('#root {  background: #000; }');
+      expect(scoped).toContain('#root {  --var: #fff; }');
+    });
+
+    it('scopes child selectors with correct spacing', () => {
+      const css = '.markdown-body h1 { color: red; }';
+      const scoped = scopeCss(css, '#root');
+      expect(scoped).toContain('#root .markdown-body h1 {  color: red; }');
+    });
+
+    it('handles multiple comma-separated selectors', () => {
+      const css = 'h1, h2 { margin: 0; }';
+      const scoped = scopeCss(css, '#root');
+      expect(scoped).toContain('#root h1, #root h2 {  margin: 0; }');
+    });
   });
 });

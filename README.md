@@ -45,12 +45,11 @@
 
 The project follows a modular React architecture designed for scalability and maintainability.
 
-*   **`src/components/`**: Organized into functional directories (Sidebar, Editor, Preview, SettingsModal). Each directory contains the component and its unit tests.
-*   **`src/hooks/`**: Custom React hooks for business logic encapsulation (e.g., `useThemes`, `useFonts`).
-*   **`src/utils/`**: Shared utilities like `cssMapper` for bidirectional theme parsing.
-*   **`src/types/`**: Centralized TypeScript interfaces and type definitions.
-*   **`src/constants/`**: App-wide configuration and theme presets.
-*   **`electron/`**: Main process logic, including IPC handlers for PDF export and file system integration.
+*   **`src/`**: Core Electron application source code.
+*   **`website/`**: React-based landing page (hosted at [yam.yujia.io](https://yam.yujia.io)).
+*   **Shared Core**: Logic like themes, typography, and CSS mapping are shared between the app and the website.
+
+For a detailed breakdown of the project structure and shared logic, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## 🚀 Development
 
@@ -72,28 +71,39 @@ The project follows a modular React architecture designed for scalability and ma
     npm install
     ```
 
-3.  **Run locally:**
+3.  **Run the App locally:**
     ```bash
     npm run dev
     ```
 
-### Building for Production
+4.  **Run the Landing Page locally:**
+    ```bash
+    npm run website:dev
+    ```
 
+### Building & Distribution
+
+#### **Electron Application**
 Build the React app and package for macOS (`.dmg`):
-
 ```bash
 npm run dist
 ```
-
 Artifacts will be in the `release/` directory.
+
+#### **Landing Page**
+Build the static website for GitHub Pages:
+```bash
+npm run website:build
+```
+Build output is generated in `dist-website/`.
 
 ### Testing
 
-The project uses [Vitest](https://vitest.dev/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) for comprehensive testing.
+The project uses [Vitest](https://vitest.dev/) for unit and integration testing.
 
-```bash
-npm test
-```
+*   **Run all tests:** `npm test`
+*   **Run App tests:** `npx vitest`
+*   **Run Website tests:** `npm run website:test`
 
 ## 📄 License
 
