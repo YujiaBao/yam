@@ -36,6 +36,8 @@
     *   **PDF Export:** High-quality export with theme preservation.
     *   **File Associations:** Open `.md` files directly from Finder.
     *   **Drag & Drop:** Open files by dropping them on the app.
+    *   **Editor Shortcuts:**
+        *   `Cmd + /`: Toggle comment on selected text or current line.
 
 ## 🛠️ Architecture
 

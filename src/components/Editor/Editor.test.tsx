@@ -21,4 +21,32 @@ describe('Editor', () => {
     const { container } = render(<Editor markdown="" setMarkdown={vi.fn()} viewMode="preview" />);
     expect(container.firstChild).toHaveClass('hidden');
   });
+
+  it('comments out selected text on Cmd+/', () => {
+    const setMarkdown = vi.fn();
+    const initialText = 'hello world';
+    render(<Editor markdown={initialText} setMarkdown={setMarkdown} viewMode="edit" />);
+    
+    const textarea = screen.getByPlaceholderText(/Start writing.../i) as HTMLTextAreaElement;
+    textarea.selectionStart = 0;
+    textarea.selectionEnd = 5; // "hello"
+    
+    fireEvent.keyDown(textarea, { key: '/', metaKey: true });
+    
+    expect(setMarkdown).toHaveBeenCalledWith('<!-- hello --> world');
+  });
+
+  it('uncomments selected text on Cmd+/', () => {
+    const setMarkdown = vi.fn();
+    const initialText = '<!-- hello --> world';
+    render(<Editor markdown={initialText} setMarkdown={setMarkdown} viewMode="edit" />);
+    
+    const textarea = screen.getByPlaceholderText(/Start writing.../i) as HTMLTextAreaElement;
+    textarea.selectionStart = 0;
+    textarea.selectionEnd = 14; // "<!-- hello -->"
+    
+    fireEvent.keyDown(textarea, { key: '/', metaKey: true });
+    
+    expect(setMarkdown).toHaveBeenCalledWith('hello world');
+  });
 });
