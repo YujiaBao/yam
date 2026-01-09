@@ -10,4 +10,16 @@ export default defineConfig({
     globals: true,
     setupFiles: './src/setupTests.ts',
   },
+  build: {
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'markdown-vendor': ['react-markdown', 'rehype-raw', 'remark-gfm'],
+          'syntax-highlighter': ['react-syntax-highlighter'],
+        },
+      },
+    },
+  },
 })
