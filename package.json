@@ -13,7 +13,9 @@
     "build:electron": "tsc -p tsconfig.electron.json",
     "build": "tsc -b && vite build && npm run build:electron",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "test": "vitest",
+    "test:e2e": "playwright test",
     "preview": "vite preview",
     "dist": "npm run build && electron-builder",
     "website:dev": "vite website",
@@ -72,6 +74,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.57.0",
     "@tailwindcss/typography": "^0.5.19",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
