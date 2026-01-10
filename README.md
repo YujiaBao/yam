@@ -104,11 +104,15 @@ Build output is generated in `dist-website/`.
 
 ### Testing
 
-The project uses [Vitest](https://vitest.dev/) for unit and integration testing.
+The project employs a comprehensive testing strategy using [Vitest](https://vitest.dev/) for unit/integration tests and [Playwright](https://playwright.dev/) for End-to-End (E2E) testing.
 
-*   **Run all tests:** `npm test`
-*   **Run App tests:** `npx vitest`
-*   **Run Website tests:** `npm run website:test`
+*   **Run Unit/Integration Tests:** `npm test`
+*   **Run E2E Tests:** `npm run test:e2e` (Requires build)
+*   **Run Website Tests:** `npm run website:test`
+*   **Lint Code:** `npm run lint`
+*   **Type Check:** `npm run typecheck`
+
+For a detailed overview of the testing architecture, see [TESTING_STRATEGY.md](TESTING_STRATEGY.md).
 
 ## 📄 License
 

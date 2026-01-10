@@ -40,7 +40,12 @@ src/
     useFonts.test.ts   <-- Hook test
 tests/
   e2e/                 <-- E2E tests (Playwright)
-    app.spec.ts
+    pages/             <-- Page Object Models
+      EditorPage.ts
+      SettingsPage.ts
+    specs/             <-- Test Specifications
+      editor.spec.ts
+      settings.spec.ts
 ```
 
 ## 3. Continuous Integration (GitHub Actions)
