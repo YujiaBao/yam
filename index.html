@@ -5,6 +5,30 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>yam</title>
+    <script>
+      (function() {
+        try {
+          var savedId = localStorage.getItem('yam_active_theme_id');
+          var userThemes = JSON.parse(localStorage.getItem('yam_user_themes') || '[]');
+          var darkIds = ['solarized-dark', 'github-dark', 'dracula', 'nord', 'cobalt'];
+          var isDark = false;
+          if (savedId) {
+            if (darkIds.indexOf(savedId) !== -1) isDark = true;
+            else {
+               var ut = userThemes.find(function(t) { return t.id === savedId; });
+               if (ut && ut.isDark) isDark = true;
+            }
+          }
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      html, body { background-color: #ffffff; }
+      html.dark, html.dark body { background-color: #0d1117; }
+    </style>
   </head>
   <body>
     <div id="root"></div>

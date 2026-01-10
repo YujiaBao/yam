@@ -1,5 +1,8 @@
 import type { Theme } from '../types';
 
+// WARNING: If you add/remove dark themes here, you MUST also update the
+// "darkIds" array in the inline script within index.html to ensure
+// the correct initial background color is applied.
 export const DEFAULT_THEMES: Theme[] = [
   {
     id: 'default',

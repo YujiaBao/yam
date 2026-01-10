@@ -8,6 +8,7 @@ import { pathToFileURL } from 'url';
 const openFiles = new Map<string, number>();
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
@@ -17,6 +18,7 @@ const createWindow = (filePath?: string) => {
   const mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    show: false,
     titleBarStyle: 'hiddenInset',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -33,6 +35,11 @@ const createWindow = (filePath?: string) => {
   } else {
     mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
   }
+
+  // Show window when ready to avoid white flash
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  });
 
   // If a file path is provided, load it when the window is ready
   if (filePath) {
