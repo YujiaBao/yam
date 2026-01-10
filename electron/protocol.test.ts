@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { handleYamLocalProtocol } from './protocol';
 import { net } from 'electron';
-import { pathToFileURL } from 'url';
 
 vi.mock('electron', () => ({
   net: {
@@ -18,6 +17,7 @@ describe('yam-local protocol handler', () => {
     // Since we are not mocking pathToFileURL, it will produce a real file:// URL based on CWD or root.
     // We just want to check that net.fetch is called.
     expect(net.fetch).toHaveBeenCalled();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const calledUrl = (net.fetch as any).mock.calls[0][0];
     expect(calledUrl).toContain('file://');
     expect(calledUrl).toContain('image.png');
@@ -27,6 +27,7 @@ describe('yam-local protocol handler', () => {
     const request = { url: 'yam-local:///path/to/my%20image.png' } as Request;
     handleYamLocalProtocol(request);
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const calledUrl = (net.fetch as any).mock.calls[1][0]; // 2nd call
     expect(calledUrl).toContain('my%20image.png'); // pathToFileURL encodes spaces again usually
   });

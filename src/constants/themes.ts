@@ -143,5 +143,87 @@ export const DEFAULT_THEMES: Theme[] = [
       .markdown-body a { color: #0088ff !important; }
     `,
     isDark: true
+  },
+  {
+    id: 'monokai',
+    name: 'Monokai',
+    css: `
+      body { background-color: #272822 !important; }
+      .markdown-body { 
+        color: #f8f8f2 !important;
+        --color-canvas-default: #272822 !important;
+        --color-canvas-subtle: #272822 !important;
+        --color-canvas-code: #1e1f1c !important;
+        --color-fg-default: #f8f8f2 !important;
+      }
+      .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: #f92672 !important; }
+      .markdown-body a { color: #66d9ef !important; }
+      .markdown-body code { color: #ae81ff !important; }
+    `,
+    isDark: true
+  },
+  {
+    id: 'synthwave',
+    name: "Synthwave '84",
+    css: `
+      body { background-color: #2b213a !important; }
+      .markdown-body { 
+        color: #fffbf3 !important;
+        --color-canvas-default: #2b213a !important;
+        --color-canvas-subtle: #2b213a !important;
+        --color-canvas-code: #241b31 !important;
+        --color-fg-default: #fffbf3 !important;
+      }
+      .markdown-body h1, .markdown-body h2 { 
+        color: #ff7edb !important; 
+        text-shadow: 0 0 10px #ff7edb, 0 0 5px #ff7edb;
+      }
+      .markdown-body h3, .markdown-body h4 { color: #36f9f6 !important; }
+      .markdown-body a { color: #ff7edb !important; }
+      .markdown-body code { color: #fe4450 !important; }
+      .markdown-body blockquote { border-left-color: #36f9f6 !important; color: #72f1b8 !important; }
+    `,
+    isDark: true
+  },
+  {
+    id: 'gruvbox-dark',
+    name: 'Gruvbox Dark',
+    css: `
+      body { background-color: #282828 !important; }
+      .markdown-body { 
+        color: #ebdbb2 !important;
+        --color-canvas-default: #282828 !important;
+        --color-canvas-subtle: #3c3836 !important;
+        --color-canvas-code: #3c3836 !important;
+        --color-fg-default: #ebdbb2 !important;
+      }
+      .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: #fb4934 !important; }
+      .markdown-body a { color: #83a598 !important; }
+      .markdown-body code { color: #d3869b !important; }
+    `,
+    isDark: true
+  },
+  {
+    id: 'cyberpunk',
+    name: 'Cyberpunk',
+    css: `
+      body { background-color: #050a14 !important; }
+      .markdown-body { 
+        color: #00ff9f !important;
+        --color-canvas-default: #050a14 !important;
+        --color-canvas-subtle: #0a1428 !important;
+        --color-canvas-code: #0a1428 !important;
+        --color-fg-default: #00ff9f !important;
+        font-family: "Courier New", Courier, monospace !important;
+      }
+      .markdown-body h1, .markdown-body h2, .markdown-body h3 { 
+        color: #ff003c !important;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .markdown-body a { color: #fcee0a !important; text-decoration: underline; }
+      .markdown-body code { color: #fcee0a !important; background-color: #ff003c33 !important; }
+    `,
+    isDark: true
   }
 ];
