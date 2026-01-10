@@ -120,6 +120,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* View Mode Toggles */}
         <button
           onClick={() => setViewMode('edit')}
+          title="Edit View"
           className={clsx(
             "p-3 rounded-xl transition-colors group relative flex justify-center",
             viewMode === 'edit' ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"
@@ -129,6 +130,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </button>
         <button
           onClick={() => setViewMode('split')}
+          title="Split View"
           className={clsx(
             "p-3 rounded-xl transition-colors group relative flex justify-center",
             viewMode === 'split' ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"
@@ -138,6 +140,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </button>
         <button
           onClick={() => setViewMode('preview')}
+          title="Preview View"
           className={clsx(
             "p-3 rounded-xl transition-colors group relative flex justify-center",
             viewMode === 'preview' ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"

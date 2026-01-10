@@ -35,6 +35,12 @@ export class SettingsPage extends BasePage {
     return await html.evaluate((el) => el.classList.contains('dark'));
   }
 
+  async getActiveThemeLabel() {
+    // The active theme has the bg-indigo-600 class
+    const activeItem = this.page.locator('div.bg-indigo-600');
+    return await activeItem.innerText();
+  }
+
   async getCurrentFontFamily() {
     return await this.appContainer.evaluate((el) => getComputedStyle(el).fontFamily);
   }

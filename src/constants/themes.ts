@@ -5,12 +5,6 @@ import type { Theme } from '../types';
 // the correct initial background color is applied.
 export const DEFAULT_THEMES: Theme[] = [
   {
-    id: 'default',
-    name: 'Default',
-    css: '',
-    isDark: false
-  },
-  {
     id: 'github-light',
     name: 'GitHub Light',
     css: `

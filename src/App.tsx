@@ -13,10 +13,10 @@ import type { ViewMode } from './types';
 
 function App() {
   const [markdown, setMarkdown] = useState<string>("# Welcome to Yam\n\n**Yam** (Yet Another Markdown App) is a modern, minimalist editor for macOS.\n\n## Features Overview\n\n### Typography & Formatting\nYou can use **bold**, *italic*, ~~strikethrough~~, or `inline code`.\n\n### Lists\n- [x] Task lists are supported\n- [ ] Unchecked item\n- Bullet points\n  - Nested bullets\n    - Deeply nested\n\n1. Ordered lists\n2. Are also supported\n\n### Tables\n| Feature | Support |\n| :--- | :--- |\n| GitHub Flavored | ✅ |\n| HTML Rendering | ✅ |\n| PDF Export | ✅ |\n\n### Code Blocks\n\n```typescript\n// React Component Example\nconst Greeting = ({ name }: { name: string }) => (\n  <div className=\"p-4 bg-indigo-100 rounded\">\n    Hello, {name}!\n  </div>\n);\n```\n\n### HTML Support\n<div style=\"padding: 12px; background-color: #dbeafe; color: #1e40af; border-radius: 8px; border: 1px solid #bfdbfe;\">\n  <strong>HTML Support:</strong> content can be styled directly.\n</div>\n\n> \"Simplicity is the ultimate sophistication.\"");
-  const [viewMode, setViewMode] = useState<ViewMode>('split');
+  const [viewMode, setViewMode] = useState<ViewMode>('preview');
   const [showSettings, setShowSettings] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [filePath, setFilePath] = useState<string>('');
 
   const editorRef = useRef<HTMLElement>(null);

@@ -202,7 +202,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                           onClick={(e) => e.stopPropagation()}
                         />
                       ) : (
-                        <span className="truncate pr-2">{t.name}</span>
+                        <span className="truncate pr-2">
+                          {t.name}
+                          {activeThemeId === t.id && <span className="text-[10px] opacity-75 ml-1 font-normal">(default)</span>}
+                        </span>
                       )}
                       
                       <div className="flex gap-1 items-center">

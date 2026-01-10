@@ -29,7 +29,7 @@
 *   **Advanced Theming:**
     *   **Visual Editor:** Intuitive sliders and color pickers for Colors, Typography, Spacing, and Layout.
     *   **Bidirectional Mapping:** Seamlessly switch between the Visual Editor and raw CSS; changes in one reflect in the other.
-    *   **Built-in Presets:** *Solarized Light/Dark*, *GitHub Light/Dark*, *Dracula*, *Nord*, *Cobalt*.
+    *   **Built-in Presets:** *Dracula (Default)*, *Solarized Light/Dark*, *GitHub Light/Dark*, *Nord*, *Cobalt*, *Monokai*, *Synthwave '84*, *Gruvbox Dark*, *Cyberpunk*.
     *   **Duplicate to Edit:** Easily customize built-in themes by duplicating them with one click.
 *   **Typography:**
     *   **System Font Discovery:** Browse and add any font installed on your macOS system.

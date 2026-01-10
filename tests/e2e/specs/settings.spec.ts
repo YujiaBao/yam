@@ -24,13 +24,39 @@ test.describe('Settings Workflow', () => {
     await electronApp.close();
   });
 
-  test('should switch themes', async () => {
+  test('should have Dracula as initial default theme and show (default) label', async () => {
+    // Clear localStorage to simulate first run
+    await editorPage.page.evaluate(() => localStorage.clear());
+    await editorPage.page.reload();
+    await editorPage.waitForAppLoad();
+
+    await editorPage.toggleSidebar();
     await editorPage.openSettings();
     await expect(settingsPage.modal).toBeVisible();
 
-    // Select Dracula
-    await settingsPage.selectTheme('Dracula');
-    expect(await settingsPage.isDarkMode()).toBe(true);
+    const label = await settingsPage.getActiveThemeLabel();
+    expect(label).toContain('Dracula');
+    expect(label).toContain('(default)');
+
+    await settingsPage.close();
+  });
+
+  test('should switch themes and update (default) label', async () => {
+    // Open sidebar first
+    if (await editorPage.sidebar.isHidden()) {
+        await editorPage.toggleSidebar();
+    }
+    await editorPage.openSettings();
+    await expect(settingsPage.modal).toBeVisible();
+
+    // Select GitHub Light
+    await settingsPage.selectTheme('GitHub Light');
+    expect(await settingsPage.isDarkMode()).toBe(false);
+
+    // Verify label moved
+    const label = await settingsPage.getActiveThemeLabel();
+    expect(label).toContain('GitHub Light');
+    expect(label).toContain('(default)');
 
     await settingsPage.close();
   });
@@ -38,14 +64,15 @@ test.describe('Settings Workflow', () => {
   test('should cycle fonts', async () => {
     const initialFont = await settingsPage.getCurrentFontFamily();
     
-    // Toggle font via sidebar (which is on EditorPage really, but SettingsPage has helper for appContainer)
-    // Actually, "Change Font" is on the Sidebar.
-    // Let's add that to EditorPage or create a SidebarPage. 
-    // For now, let's use the locator in SettingsPage if I added it, wait, I added fontBtn to SettingsPage but it might be the wrong button?
-    // In Sidebar, button text is "Change Font". In SettingsModal, it's different.
-    // The previous test clicked "Change Font" on the Sidebar.
-    
-    // Let's use the EditorPage sidebar interaction for this.
+    // Sidebar should already be open from previous test (if using same instance)
+    // but better to be safe and ensure it's open. 
+    // In beforeAll we created a fresh instance, but tests in a file run sequentially.
+    // If they share the window, we should handle the state. 
+    // Here we just toggle if hidden.
+    if (await editorPage.sidebar.isHidden()) {
+        await editorPage.toggleSidebar();
+    }
+
     const fontBtn = editorPage.page.locator('button', { hasText: 'Change Font' });
     await fontBtn.click();
     

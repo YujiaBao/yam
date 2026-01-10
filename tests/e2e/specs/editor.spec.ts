@@ -25,22 +25,32 @@ test.describe('Editor Workflow', () => {
     expect(await editorPage.page.title()).toBe('yam');
   });
 
-  test('should display editor and preview panes', async () => {
-    await expect(editorPage.editor).toBeVisible();
+  test('should display preview pane by default and hidden editor', async () => {
     await expect(editorPage.preview).toBeVisible();
+    await expect(editorPage.editor).toBeHidden();
   });
 
-  test('should update preview when typing in editor', async () => {
+  test('should update preview when typing in editor (after switching to split mode)', async () => {
+    // Show sidebar and switch to split mode to see editor
+    await editorPage.toggleSidebar();
+    const splitModeBtn = editorPage.page.locator('button[title="Split View"]');
+    await splitModeBtn.click();
+
     await editorPage.typeMarkdown('# Hello POM');
     await expect(editorPage.preview).toContainText('Hello POM');
     await expect(editorPage.preview.locator('h1')).toHaveText('Hello POM');
   });
 
   test('should toggle sidebar', async () => {
+    // Ensure sidebar is hidden initially (might be open from previous test)
+    if (await editorPage.sidebar.isVisible()) {
+      await editorPage.toggleSidebar();
+    }
+    await expect(editorPage.sidebar).toBeHidden();
+
+    await editorPage.toggleSidebar();
     await expect(editorPage.sidebar).toBeVisible();
     await editorPage.toggleSidebar();
     await expect(editorPage.sidebar).toBeHidden();
-    await editorPage.toggleSidebar();
-    await expect(editorPage.sidebar).toBeVisible();
   });
 });

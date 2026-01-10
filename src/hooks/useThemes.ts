@@ -12,7 +12,9 @@ export const useThemes = () => {
   });
 
   const [activeThemeId, setActiveThemeId] = useState<string>(() => {
-    return localStorage.getItem('yam_active_theme_id') || 'default';
+    const saved = localStorage.getItem('yam_active_theme_id');
+    if (saved === 'default') return 'dracula';
+    return saved || 'dracula';
   });
 
   const allThemes = [...DEFAULT_THEMES, ...userThemes];

@@ -33,6 +33,10 @@ test.describe('Extended Theme Workflow', () => {
 
   for (const theme of newThemes) {
     test(`should switch to ${theme} theme`, async () => {
+      // Ensure sidebar is open to access settings
+      if (await editorPage.sidebar.isHidden()) {
+        await editorPage.toggleSidebar();
+      }
       await editorPage.openSettings();
       await expect(settingsPage.modal).toBeVisible();
 
