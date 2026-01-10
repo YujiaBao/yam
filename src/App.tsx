@@ -86,8 +86,8 @@ function App() {
 
     // For file input, we get the file object but we might not get the full path reliably in browser context
     // However, Electron sets the 'path' property on the File object
-    // @ts-ignore
-    const fullPath = file.path; 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const fullPath = (file as any).path; 
     setFilePath(fullPath || '');
 
     const reader = new FileReader();

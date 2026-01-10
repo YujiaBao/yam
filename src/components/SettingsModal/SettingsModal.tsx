@@ -78,18 +78,19 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
   const visualSettings = parseCss(activeCss);
 
-  useEffect(() => {
-    if (activeTab === 'fonts' && showSystemFonts && systemFonts.length === 0) {
-      loadFonts();
-    }
-  }, [activeTab, showSystemFonts]);
-
   const loadFonts = async () => {
     setIsLoadingFonts(true);
     const available = await getSystemFonts();
     setSystemFonts(available);
     setIsLoadingFonts(false);
   };
+
+  useEffect(() => {
+    if (activeTab === 'fonts' && showSystemFonts && systemFonts.length === 0) {
+      loadFonts();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, showSystemFonts]);
 
   const handleVisualSettingChange = (key: keyof typeof visualSettings, value: string) => {
     const newSettings = { ...visualSettings, [key]: value };
@@ -113,12 +114,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     setShowSystemFonts(false);
   };
 
-  const parsePx = (val: any): number => {
+  const parsePx = (val: unknown): number => {
     const parsed = parseInt(String(val));
     return isNaN(parsed) ? 0 : parsed;
   };
 
-  const parseFloatSafe = (val: any): number => {
+  const parseFloatSafe = (val: unknown): number => {
     const parsed = parseFloat(String(val));
     return isNaN(parsed) ? 1.6 : parsed;
   };

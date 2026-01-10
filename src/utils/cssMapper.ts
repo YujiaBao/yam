@@ -26,7 +26,7 @@ export const parseCss = (css: string): VisualSettings => {
   const cleanCss = css.replace(/\/\*[\s\S]*?\*\//g, '');
 
   const getVariableValue = (name: string): string | null => {
-    const regex = new RegExp(`${name}\s*:\s*([^;!}]+)`, 'i');
+    const regex = new RegExp(`${name}\\s*:\\s*([^;!}]+)`, 'i');
     const match = cleanCss.match(regex);
     if (match) {
       return match[1].split('!important')[0].trim();

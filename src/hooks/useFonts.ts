@@ -23,7 +23,8 @@ export const useFonts = () => {
     if (activeFont && !activeFont.weights.includes(activeWeight)) {
       setActiveWeight(activeFont.weights[0] || 'normal');
     }
-  }, [activeFontId, activeFont, activeWeight]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeFontId, activeFont]); // activeWeight omitted to prevent loop
 
   useEffect(() => {
     localStorage.setItem('yam_fonts_config', JSON.stringify(fonts));
@@ -40,10 +41,11 @@ export const useFonts = () => {
   const getSystemFonts = async (): Promise<{ family: string; name: string }[]> => {
     try {
       if ('queryLocalFonts' in window) {
-        // @ts-ignore
-        const availableFonts = await window.queryLocalFonts();
+        // @ts-expect-error - QueryLocalFonts API is not yet in standard types
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const availableFonts: any[] = await window.queryLocalFonts();
         // De-duplicate families and sort
-        const families = Array.from(new Set(availableFonts.map((f: any) => f.family as string))).sort() as string[];
+        const families = Array.from(new Set(availableFonts.map((f) => f.family as string))).sort() as string[];
         return families.map(f => ({ family: f, name: f }));
       }
     } catch (err) {

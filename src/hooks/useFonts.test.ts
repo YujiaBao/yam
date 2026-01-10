@@ -21,7 +21,7 @@ describe('useFonts hook', () => {
   it('allows adding a font from system discovery', async () => {
     const { result } = renderHook(() => useFonts());
     
-    let available: any[] = [];
+    let available: { family: string; name: string }[] = [];
     await act(async () => {
       available = await result.current.getSystemFonts();
     });
