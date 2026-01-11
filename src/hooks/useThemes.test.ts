@@ -11,7 +11,7 @@ describe('useThemes hook', () => {
   it('initializes with default themes', () => {
     const { result } = renderHook(() => useThemes());
     expect(result.current.cssThemes).toEqual(expect.arrayContaining(DEFAULT_THEMES));
-    expect(result.current.activeThemeId).toBe('default');
+    expect(result.current.activeThemeId).toBe('dracula');
   });
 
   it('can change active theme', () => {

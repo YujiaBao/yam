@@ -36,8 +36,8 @@ describe('SettingsModal', () => {
 
   it('renders themes list', () => {
     render(<SettingsModal {...defaultProps} />);
-    // Use getAllByText because 'Default' appears in the list and the editor header
-    expect(screen.getAllByText('Default').length).toBeGreaterThan(0);
+    // Default theme removed, check for GitHub Light
+    expect(screen.getByText('GitHub Light')).toBeInTheDocument();
     expect(screen.getByText('Solarized Light')).toBeInTheDocument();
   });
 
@@ -90,7 +90,8 @@ describe('SettingsModal', () => {
   it('calls onClose when close button is clicked', () => {
     render(<SettingsModal {...defaultProps} />);
     // The X button is the only button with lucide-x
-    const closeButton = screen.getAllByRole('button')[2]; // Themes, Fonts, X
+    // Themes, Fonts, General, X -> index 3
+    const closeButton = screen.getAllByRole('button')[3]; 
     fireEvent.click(closeButton);
     expect(defaultProps.onClose).toHaveBeenCalled();
   });
