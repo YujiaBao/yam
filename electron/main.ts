@@ -28,12 +28,13 @@ const createWindow = (filePath?: string) => {
   });
 
   const isDev = process.env.NODE_ENV === 'development';
+  const query = filePath ? '?file=true' : '';
 
   if (isDev) {
-    mainWindow.loadURL('http://localhost:5173');
+    mainWindow.loadURL(`http://localhost:5173${query}`);
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
+    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'), { search: query });
   }
 
   // Show window when ready to avoid white flash
@@ -128,6 +129,19 @@ ipcMain.handle('export-pdf', async (event) => {
 app.on('ready', () => {
   // Register 'yam-local' protocol to serve local files securely
   protocol.handle('yam-local', handleYamLocalProtocol);
+
+  // Handle files passed as arguments (Windows/Linux or CLI)
+  const args = process.argv.slice(app.isPackaged ? 1 : 2);
+  args.forEach(arg => {
+    // Basic check to see if it's a file path and not a flag
+    if (!arg.startsWith('-') && fs.existsSync(arg) && fs.lstatSync(arg).isFile()) {
+      const fullPath = path.resolve(arg);
+      // Only add if not already in queue (e.g. from open-file event)
+      if (!fileOpenQueue.includes(fullPath)) {
+        fileOpenQueue.push(fullPath);
+      }
+    }
+  });
 
   // Process queue
   if (fileOpenQueue.length > 0) {

@@ -13,6 +13,12 @@
 </p>
 
 <p align="center">
+  <a href="https://yam.yujia.io">
+    <img src="https://img.shields.io/badge/Download-Yam%20for%20macOS-blue?style=for-the-badge&logo=apple" alt="Download Yam for macOS">
+  </a>
+</p>
+
+<p align="center">
   <a href="https://github.com/YujiaBao/yam/actions/workflows/build.yml"><img src="https://github.com/YujiaBao/yam/actions/workflows/build.yml/badge.svg" alt="Build Status"></a>
   <a href="https://github.com/YujiaBao/yam/actions/workflows/deploy-website.yml"><img src="https://github.com/YujiaBao/yam/actions/workflows/deploy-website.yml/badge.svg" alt="Website Deployment"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
@@ -45,6 +51,15 @@
     *   **File Associations:** Open `.md` files directly from Finder.
     *   **Editor Shortcuts:**
         *   `Cmd + /`: Toggle comment on selected text or current line.
+
+## 📥 Get Started
+
+If you want to use **YAM** as your daily Markdown editor:
+
+1.  Visit [yam.yujia.io](https://yam.yujia.io).
+2.  Click the **Download** button to get the latest `.dmg` for macOS.
+3.  Drag **Yam** to your **Applications** folder.
+4.  **First Launch:** Since YAM is currently unsigned, you may need to go to **System Settings > Privacy & Security** and click **"Open Anyway"** after the first attempt to open the app.
 
 ## 🛠️ Architecture
 

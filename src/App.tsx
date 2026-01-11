@@ -48,10 +48,14 @@ function App() {
   } = useGeneralSettings();
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const isOpeningFile = params.get('file') === 'true';
+
     const loadContent = async () => {
-      // If we already have content (e.g. from file open which might run before this?), skip.
-      // But file open is async event. 
-      // Let's assume on mount we want default content.
+      // If we are opening a file, don't load default content
+      // as it will be handled by the 'onFileOpened' listener
+      if (isOpeningFile || filePath) return;
+
       if (customDefaultContent !== null) {
         setMarkdown(customDefaultContent);
       } else {
@@ -66,7 +70,7 @@ function App() {
       }
     };
     loadContent();
-  }, [customDefaultContent]); // Run on mount or when custom content setting changes
+  }, [customDefaultContent, filePath]); // Added filePath as dependency
 
   // Custom CSS Themes Hook
   const {
