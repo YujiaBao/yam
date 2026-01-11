@@ -8,12 +8,15 @@ import { Preview } from './components/Preview/Preview';
 import { SettingsModal } from './components/SettingsModal/SettingsModal';
 import { useThemes } from './hooks/useThemes';
 import { useFonts } from './hooks/useFonts';
+import { useGeneralSettings } from './hooks/useGeneralSettings';
 import { useSyncScroll } from './hooks/useSyncScroll';
 import type { ViewMode } from './types';
 
 function App() {
-  const [markdown, setMarkdown] = useState<string>("# Welcome to Yam\n\n**Yam** (Yet Another Markdown App) is a modern, minimalist editor for macOS.\n\n## Features Overview\n\n### Typography & Formatting\nYou can use **bold**, *italic*, ~~strikethrough~~, or `inline code`.\n\n### Lists\n- [x] Task lists are supported\n- [ ] Unchecked item\n- Bullet points\n  - Nested bullets\n    - Deeply nested\n\n1. Ordered lists\n2. Are also supported\n\n### Tables\n| Feature | Support |\n| :--- | :--- |\n| GitHub Flavored | ✅ |\n| HTML Rendering | ✅ |\n| PDF Export | ✅ |\n\n### Code Blocks\n\n```typescript\n// React Component Example\nconst Greeting = ({ name }: { name: string }) => (\n  <div className=\"p-4 bg-indigo-100 rounded\">\n    Hello, {name}!\n  </div>\n);\n```\n\n### HTML Support\n<div style=\"padding: 12px; background-color: #dbeafe; color: #1e40af; border-radius: 8px; border: 1px solid #bfdbfe;\">\n  <strong>HTML Support:</strong> content can be styled directly.\n</div>\n\n> \"Simplicity is the ultimate sophistication.\"");
-  const [viewMode, setViewMode] = useState<ViewMode>('preview');
+  const [markdown, setMarkdown] = useState<string>("");
+  const [viewMode, setViewMode] = useState<ViewMode>(() => {
+    return (localStorage.getItem('yam_launch_view_mode') as ViewMode) || 'split';
+  });
   const [showSettings, setShowSettings] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -34,6 +37,36 @@ function App() {
     cycleFont,
     cycleWeight
   } = useFonts();
+
+  const {
+    launchViewMode,
+    setLaunchViewMode,
+    fileOpenViewMode,
+    setFileOpenViewMode,
+    customDefaultContent,
+    setCustomDefaultContent
+  } = useGeneralSettings();
+
+  useEffect(() => {
+    const loadContent = async () => {
+      // If we already have content (e.g. from file open which might run before this?), skip.
+      // But file open is async event. 
+      // Let's assume on mount we want default content.
+      if (customDefaultContent !== null) {
+        setMarkdown(customDefaultContent);
+      } else {
+        try {
+          const res = await fetch('default.md');
+          if (res.ok) {
+            setMarkdown(await res.text());
+          }
+        } catch (e) {
+          console.error("Failed to load default content", e);
+        }
+      }
+    };
+    loadContent();
+  }, []); // Run once on mount
 
   // Custom CSS Themes Hook
   const {
@@ -71,8 +104,10 @@ function App() {
       const unsubscribe = window.electron.onFileOpened((data) => {
         setMarkdown(data.content);
         setFilePath(data.filePath);
-        // Automatically switch to preview mode and hide sidebar for better reading experience
-        setViewMode('preview');
+        // Use configured view mode for file opening
+        const mode = localStorage.getItem('yam_file_open_view_mode') as ViewMode || 'preview';
+        setViewMode(mode);
+        // Hide sidebar for focus
         setIsSidebarOpen(false);
       });
       return () => unsubscribe();
@@ -202,6 +237,12 @@ function App() {
               getSystemFonts={getSystemFonts}
               onCreateFont={handleCreateFont}
               onDeleteFont={handleDeleteFont}
+              launchViewMode={launchViewMode}
+              setLaunchViewMode={setLaunchViewMode}
+              fileOpenViewMode={fileOpenViewMode}
+              setFileOpenViewMode={setFileOpenViewMode}
+              customDefaultContent={customDefaultContent}
+              setCustomDefaultContent={setCustomDefaultContent}
             />
           )}
         </main>

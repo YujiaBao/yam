@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Upload, Plus, Trash2, HelpCircle, Lock, Palette, Code, Copy, Edit2, Search } from 'lucide-react';
 import clsx from 'clsx';
-import type { Theme, FontOption, FontWeight } from '../../types';
+import type { Theme, FontOption, FontWeight, ViewMode } from '../../types';
 import { DEFAULT_THEMES } from '../../constants/themes';
 import { parseCss, generateCss } from '../../utils/cssMapper';
 
@@ -24,6 +24,12 @@ interface SettingsModalProps {
   getSystemFonts: () => Promise<{ family: string; name: string }[]>;
   onCreateFont: (name: string, family: string, weights: FontWeight[]) => void;
   onDeleteFont: (id: string) => void;
+  launchViewMode: ViewMode;
+  setLaunchViewMode: (mode: ViewMode) => void;
+  fileOpenViewMode: ViewMode;
+  setFileOpenViewMode: (mode: ViewMode) => void;
+  customDefaultContent: string | null;
+  setCustomDefaultContent: (content: string | null) => void;
 }
 
 const CSS_HELP = [
@@ -60,9 +66,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   setActiveFontId,
   getSystemFonts,
   onCreateFont,
-  onDeleteFont
+  onDeleteFont,
+  launchViewMode,
+  setLaunchViewMode,
+  fileOpenViewMode,
+  setFileOpenViewMode,
+  customDefaultContent,
+  setCustomDefaultContent
 }) => {
-  const [activeTab, setActiveTab] = useState<'themes' | 'fonts'>('themes');
+  const [activeTab, setActiveTab] = useState<'themes' | 'fonts' | 'general'>('themes');
   const [editorMode, setEditorMode] = useState<'visual' | 'code'>('visual');
   const [showHelp, setShowHelp] = useState(false);
   
@@ -75,6 +87,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   // Inline renaming state
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renamingValue, setRenamingValue] = useState('');
+  const [loadedDefault, setLoadedDefault] = useState('');
 
   const visualSettings = parseCss(activeCss);
 
@@ -91,6 +104,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, showSystemFonts]);
+
+  useEffect(() => {
+    if (customDefaultContent === null) {
+      fetch('default.md').then(res => res.text()).then(text => setLoadedDefault(text)).catch(console.error);
+    }
+  }, [customDefaultContent]);
 
   const handleVisualSettingChange = (key: keyof typeof visualSettings, value: string) => {
     const newSettings = { ...visualSettings, [key]: value };
@@ -154,6 +173,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 )}
               >
                 Fonts
+              </button>
+              <button 
+                onClick={() => setActiveTab('general')}
+                className={clsx(
+                  "text-sm font-medium transition-colors",
+                  activeTab === 'general' ? "text-indigo-600 dark:text-indigo-400" : "text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                )}
+              >
+                General
               </button>
             </div>
           </div>
@@ -482,7 +510,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </div>
               </div>
             </>
-          ) : (
+          ) : activeTab === 'fonts' ? (
             <>
               {/* Font List */}
               <div className="w-1/3 border-r border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex flex-col min-h-0">
@@ -631,6 +659,97 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 )}
               </div>
             </>
+          ) : (
+            // General Tab
+            <div className="flex-1 flex overflow-hidden min-h-0 bg-gray-50 dark:bg-gray-900">
+              <div className="w-full max-w-2xl mx-auto p-8 overflow-y-auto space-y-8">
+                <div>
+                  <h3 className="text-lg font-bold mb-1">Startup Behavior</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-6">Configure how Yam should behave when you open it.</p>
+                  
+                  <div className="space-y-6">
+                    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 space-y-4">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                        When opening Yam directly
+                      </label>
+                      <div className="grid grid-cols-3 gap-3">
+                        {(['edit', 'split', 'preview'] as const).map(mode => (
+                          <button
+                            key={mode}
+                            onClick={() => setLaunchViewMode(mode)}
+                            className={clsx(
+                              "px-4 py-3 rounded-lg text-xs font-medium border transition-all capitalize",
+                              launchViewMode === mode
+                                ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-500/20"
+                                : "bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            )}
+                          >
+                            {mode === 'edit' ? 'Editor Only' : mode === 'split' ? 'Split View' : 'Preview Only'}
+                          </button>
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-gray-400">
+                        Common preference: <strong>Split View</strong> or <strong>Editor Only</strong>.
+                      </p>
+                    </div>
+
+                    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 space-y-4">
+                      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                        When opening a file (e.g. from Finder)
+                      </label>
+                      <div className="grid grid-cols-3 gap-3">
+                        {(['edit', 'split', 'preview'] as const).map(mode => (
+                          <button
+                            key={mode}
+                            onClick={() => setFileOpenViewMode(mode)}
+                            className={clsx(
+                              "px-4 py-3 rounded-lg text-xs font-medium border transition-all capitalize",
+                              fileOpenViewMode === mode
+                                ? "bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-500/20"
+                                : "bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            )}
+                          >
+                            {mode === 'edit' ? 'Editor Only' : mode === 'split' ? 'Split View' : 'Preview Only'}
+                          </button>
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-gray-400">
+                        Common preference: <strong>Preview Only</strong> for a clean reading experience.
+                      </p>
+                    </div>
+
+                    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 space-y-4">
+                      <div className="flex justify-between items-center">
+                        <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200">
+                          Default New File Content
+                        </label>
+                        {customDefaultContent !== null && (
+                          <button
+                            onClick={() => {
+                              if (confirm('Reset to factory default content?')) {
+                                setCustomDefaultContent(null);
+                              }
+                            }}
+                            className="text-[10px] text-red-500 hover:text-red-600 font-medium"
+                          >
+                            RESET TO FACTORY
+                          </button>
+                        )}
+                      </div>
+                      <textarea
+                        className="w-full h-48 p-3 text-xs font-mono bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg outline-none focus:border-indigo-500 resize-none leading-relaxed"
+                        placeholder="Loading default content..."
+                        value={customDefaultContent ?? loadedDefault}
+                        onChange={(e) => setCustomDefaultContent(e.target.value)}
+                      />
+                      <p className="text-[10px] text-gray-400">
+                        This content will appear when you open Yam directly.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </div>

@@ -26,6 +26,12 @@ describe('SettingsModal', () => {
     getSystemFonts: vi.fn().mockResolvedValue([
       { family: 'System Font 1', name: 'System Font 1' },
     ]),
+    launchViewMode: 'split' as const,
+    setLaunchViewMode: vi.fn(),
+    fileOpenViewMode: 'preview' as const,
+    setFileOpenViewMode: vi.fn(),
+    customDefaultContent: null,
+    setCustomDefaultContent: vi.fn(),
   };
 
   it('renders themes list', () => {

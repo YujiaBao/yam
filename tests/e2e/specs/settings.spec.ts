@@ -64,11 +64,7 @@ test.describe('Settings Workflow', () => {
   test('should cycle fonts', async () => {
     const initialFont = await settingsPage.getCurrentFontFamily();
     
-    // Sidebar should already be open from previous test (if using same instance)
-    // but better to be safe and ensure it's open. 
-    // In beforeAll we created a fresh instance, but tests in a file run sequentially.
-    // If they share the window, we should handle the state. 
-    // Here we just toggle if hidden.
+    // Sidebar should already be open from previous test
     if (await editorPage.sidebar.isHidden()) {
         await editorPage.toggleSidebar();
     }
