@@ -52,6 +52,7 @@ The project follows a modular React architecture designed for scalability and ma
 
 *   **`src/`**: Core Electron application source code.
 *   **`website/`**: React-based landing page (hosted at [yam.yujia.io](https://yam.yujia.io)).
+*   **`tests/`**: Unified E2E test suite (Playwright).
 *   **Shared Core**: Logic like themes, typography, and CSS mapping are shared between the app and the website.
 
 For a detailed breakdown of the project structure and shared logic, see [ARCHITECTURE.md](ARCHITECTURE.md).

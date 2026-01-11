@@ -9,7 +9,7 @@ test.describe('Extended Theme Workflow', () => {
   let settingsPage: SettingsPage;
 
   test.beforeAll(async () => {
-    const mainScript = path.join(__dirname, '../../../dist-electron/main.js');
+    const mainScript = path.join(__dirname, '../../../../dist-electron/main.js');
     electronApp = await electron.launch({
       args: [mainScript],
       env: { ...process.env, NODE_ENV: 'production' }

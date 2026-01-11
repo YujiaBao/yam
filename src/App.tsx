@@ -66,7 +66,7 @@ function App() {
       }
     };
     loadContent();
-  }, []); // Run once on mount
+  }, [customDefaultContent]); // Run on mount or when custom content setting changes
 
   // Custom CSS Themes Hook
   const {

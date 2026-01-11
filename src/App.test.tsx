@@ -23,12 +23,12 @@ vi.stubGlobal('window', {
 describe('App', () => {
   beforeEach(() => {
     // Mock fetch for default.md
-    global.fetch = vi.fn(() =>
+    vi.stubGlobal('fetch', vi.fn(() =>
       Promise.resolve({
         ok: true,
         text: () => Promise.resolve('# Welcome to Yam'),
       })
-    ) as any;
+    ));
   });
 
   afterEach(() => {

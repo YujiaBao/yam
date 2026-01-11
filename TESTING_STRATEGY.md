@@ -20,32 +20,36 @@ We adhere to the "Testing Trophy" philosophy, emphasizing integration tests whil
 - **Goal**: Verify that components work together (e.g., Editor updates Preview).
 
 ### C. End-to-End (E2E) Tests (Playwright)
-- **Scope**: The fully packaged Electron application.
-- **Tools**: Playwright for Electron.
+- **Scope**: The fully packaged Electron application and the production landing page.
+- **Tools**: Playwright (Electron & Browser projects).
 - **Location**: `tests/e2e/`.
-- **Goal**: Verify app launch, window management, IPC communication, and native features (file system access) which cannot be tested in JSDOM.
+- **Goal**: Verify cross-platform app behavior, website responsiveness, and feature parity between app and web demos.
+- **Commands**: 
+  - `npm run test:e2e` (All projects)
+  - `npm run test:e2e -- --project=app` (Electron only)
+  - `npm run test:e2e -- --project=website` (Website only)
 
 ## 2. Directory Structure
 
-We follow a **co-location** pattern for unit and integration tests.
+We follow a **co-location** pattern for unit and integration tests, and a **unified hierarchy** for E2E.
 
 ```
-src/
+src/                   <-- App Source
   components/
     Editor/
       Editor.tsx
-      Editor.test.tsx  <-- Unit/Integration test
-  hooks/
-    useFonts.ts
-    useFonts.test.ts   <-- Hook test
+      Editor.test.tsx  <-- App Unit Test
+website/               <-- Website Source
+  tests/
+    LandingPage.test.tsx <-- Website Unit Test
 tests/
-  e2e/                 <-- E2E tests (Playwright)
-    pages/             <-- Page Object Models
-      EditorPage.ts
-      SettingsPage.ts
-    specs/             <-- Test Specifications
-      editor.spec.ts
-      settings.spec.ts
+  e2e/                 <-- Unified E2E tests (Playwright)
+    app/               <-- Electron Application Tests
+      pages/           <-- App Page Objects
+      specs/           <-- App Test Specs
+    website/           <-- Website Tests
+      pages/           <-- Website Page Objects
+      specs/           <-- Website Test Specs
 ```
 
 ## 3. Continuous Integration (GitHub Actions)

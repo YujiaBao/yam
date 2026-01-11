@@ -32,6 +32,7 @@ describe('SettingsModal', () => {
     setFileOpenViewMode: vi.fn(),
     customDefaultContent: null,
     setCustomDefaultContent: vi.fn(),
+    embedded: false,
   };
 
   it('renders themes list', () => {
