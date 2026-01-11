@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import { vi } from 'vitest';
 
 const localStorageMock = (function() {
   let store: Record<string, string> = {};
@@ -19,5 +20,29 @@ const localStorageMock = (function() {
 })();
 
 Object.defineProperty(window, 'localStorage', {
+
   value: localStorageMock
+
+});
+
+
+
+// Mock fetch globally for all tests
+
+global.fetch = vi.fn((url: string) => {
+
+  if (url === 'default.md') {
+
+    return Promise.resolve({
+
+      ok: true,
+
+      text: () => Promise.resolve('# Welcome to Yam'),
+
+    } as Response);
+
+  }
+
+  return Promise.reject(new Error(`Unhandled fetch to: ${url}`));
+
 });

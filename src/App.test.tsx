@@ -3,36 +3,32 @@ import App from './App';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // Mock electron
-vi.stubGlobal('window', {
-  electron: {
+Object.defineProperty(window, 'electron', {
+  value: {
     onFileOpened: vi.fn(() => () => {}),
     exportPdf: vi.fn(),
   },
-  matchMedia: vi.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(), // deprecated
-    removeListener: vi.fn(), // deprecated
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
+  configurable: true,
 });
+
+window.matchMedia = vi.fn().mockImplementation(query => ({
+  matches: false,
+  media: query,
+  onchange: null,
+  addListener: vi.fn(), // deprecated
+  removeListener: vi.fn(), // deprecated
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+  dispatchEvent: vi.fn(),
+}));
 
 describe('App', () => {
   beforeEach(() => {
-    // Mock fetch for default.md
-    vi.stubGlobal('fetch', vi.fn(() =>
-      Promise.resolve({
-        ok: true,
-        text: () => Promise.resolve('# Welcome to Yam'),
-      })
-    ));
+    // LocalStorage or other mocks if needed
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders the welcome message in preview and editor', async () => {
