@@ -28,21 +28,12 @@ Object.defineProperty(window, 'localStorage', {
 
 
 // Mock fetch globally for all tests
-
-global.fetch = vi.fn((url: string) => {
-
+vi.stubGlobal('fetch', vi.fn((url: string) => {
   if (url === 'default.md') {
-
     return Promise.resolve({
-
       ok: true,
-
       text: () => Promise.resolve('# Welcome to Yam'),
-
     } as Response);
-
   }
-
   return Promise.reject(new Error(`Unhandled fetch to: ${url}`));
-
-});
+}));
