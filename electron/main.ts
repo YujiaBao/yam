@@ -260,7 +260,7 @@ ipcMain.handle('open-file-dialog', async (event) => {
     // Otherwise open in new window
     handleOpenFile(selectedPath);
     return { canceled: true };
-  } catch (error) {
+  } catch {
     return { canceled: true };
   }
 });

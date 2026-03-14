@@ -147,26 +147,6 @@ function App() {
   }, [isDirty, filePath]);
 
   // Save handlers
-  const handleSave = useCallback(async (): Promise<boolean> => {
-    if (!window.electron) return false;
-    const currentPath = filePathRef.current;
-    const content = markdownRef.current;
-
-    if (currentPath) {
-      const result = await window.electron.saveFile({ filePath: currentPath, content });
-      if (result.success) {
-        savedContentRef.current = content;
-        setIsDirty(false);
-        return true;
-      } else {
-        alert(`Failed to save: ${result.error}`);
-        return false;
-      }
-    } else {
-      return handleSaveAs();
-    }
-  }, []);
-
   const handleSaveAs = useCallback(async (): Promise<boolean> => {
     if (!window.electron) return false;
     const content = markdownRef.current;
@@ -185,6 +165,26 @@ function App() {
     return false;
   }, []);
 
+  const handleSave = useCallback(async (): Promise<boolean> => {
+    if (!window.electron) return false;
+    const currentPath = filePathRef.current;
+    const content = markdownRef.current;
+
+    if (currentPath) {
+      const result = await window.electron.saveFile({ filePath: currentPath, content });
+      if (result.success) {
+        savedContentRef.current = content;
+        setIsDirty(false);
+        return true;
+      } else {
+        alert(`Failed to save: ${result.error}`);
+        return false;
+      }
+    } else {
+      return handleSaveAs();
+    }
+  }, [handleSaveAs]);
+
   // Handle incoming file from Electron (e.g. "Open With")
   useEffect(() => {
     if (window.electron && window.electron.onFileOpened) {
@@ -201,6 +201,23 @@ function App() {
       return () => unsubscribe();
     }
   }, []);
+
+  const handleExportPdf = useCallback(async () => {
+    if (isExporting) return;
+    setIsExporting(true);
+    try {
+      if (window.electron) {
+        await window.electron.exportPdf();
+      } else {
+        alert('PDF Export is only available in the desktop app.');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Failed to export PDF');
+    } finally {
+      setIsExporting(false);
+    }
+  }, [isExporting]);
 
   // Menu event listeners
   useEffect(() => {
@@ -244,24 +261,7 @@ function App() {
     }
 
     return () => { cleanups.forEach(fn => fn()); };
-  }, [handleSave, handleSaveAs]);
-
-  const handleExportPdf = async () => {
-    if (isExporting) return;
-    setIsExporting(true);
-    try {
-      if (window.electron) {
-        await window.electron.exportPdf();
-      } else {
-        alert('PDF Export is only available in the desktop app.');
-      }
-    } catch (e) {
-      console.error(e);
-      alert('Failed to export PDF');
-    } finally {
-      setIsExporting(false);
-    }
-  };
+  }, [handleSave, handleSaveAs, handleExportPdf]);
 
   const fontWeights = {
     light: 'font-light',
