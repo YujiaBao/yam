@@ -37,13 +37,15 @@ describe('App', () => {
 
   it('renders the welcome message in preview and editor', async () => {
     render(<App />);
-    expect(await screen.findByRole('heading', { name: /Welcome to Yam/i })).toBeInTheDocument();
+    // Preview uses debounced markdown (150ms delay), allow extra time
+    expect(await screen.findByRole('heading', { name: /Welcome to Yam/i }, { timeout: 3000 })).toBeInTheDocument();
     expect(screen.getByDisplayValue(/# Welcome to Yam/i)).toBeInTheDocument();
   });
 
   it('renders the toolbar with view mode buttons', async () => {
     render(<App />);
-    await screen.findByRole('heading', { name: /Welcome to Yam/i });
+    // Wait for app to fully load
+    await screen.findByRole('heading', { name: /Welcome to Yam/i }, { timeout: 3000 });
 
     expect(screen.getByTitle('Editor')).toBeInTheDocument();
     expect(screen.getByTitle('Split')).toBeInTheDocument();
