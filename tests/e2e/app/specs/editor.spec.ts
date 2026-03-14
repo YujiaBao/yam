@@ -22,32 +22,24 @@ test.describe('Editor Workflow', () => {
   });
 
   test('should launch with correct title', async () => {
-    expect(await editorPage.page.title()).toBe('yam');
+    const title = await editorPage.page.title();
+    expect(title).toContain('Yam');
   });
 
   test('should display split view by default', async () => {
-    // Default launch mode is now 'split'
     await expect(editorPage.preview).toBeVisible();
     await expect(editorPage.editor).toBeVisible();
   });
 
   test('should update preview when typing in editor', async () => {
-    // Already in split mode, so sidebar logic not needed to make editor visible
     await editorPage.typeMarkdown('# Hello POM');
     await expect(editorPage.preview).toContainText('Hello POM');
     await expect(editorPage.preview.locator('h1')).toHaveText('Hello POM');
   });
 
-  test('should toggle sidebar', async () => {
-    // Ensure sidebar is hidden initially (default)
-    if (await editorPage.sidebar.isVisible()) {
-      await editorPage.toggleSidebar();
-    }
-    await expect(editorPage.sidebar).toBeHidden();
-
-    await editorPage.toggleSidebar();
-    await expect(editorPage.sidebar).toBeVisible();
-    await editorPage.toggleSidebar();
-    await expect(editorPage.sidebar).toBeHidden();
+  test('should show toolbar with view mode buttons', async () => {
+    await expect(editorPage.page.locator('button[title="Editor"]')).toBeVisible();
+    await expect(editorPage.page.locator('button[title="Split"]')).toBeVisible();
+    await expect(editorPage.page.locator('button[title="Preview"]')).toBeVisible();
   });
 });

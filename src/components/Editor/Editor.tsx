@@ -13,7 +13,6 @@ interface EditorProps {
  */
 export const Editor = forwardRef<HTMLElement, EditorProps>(({ markdown, setMarkdown, viewMode }, ref) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   // Expose the textarea to the parent ref for scroll synchronization
   useImperativeHandle(ref, () => textareaRef.current as HTMLTextAreaElement);
@@ -56,7 +55,7 @@ export const Editor = forwardRef<HTMLElement, EditorProps>(({ markdown, setMarkd
         const lines = markdown.split('\n');
         let currentPos = 0;
         let lineIndex = 0;
-        
+
         // Find current line index
         for (let i = 0; i < lines.length; i++) {
           const lineEnd = currentPos + lines[i].length;
@@ -69,7 +68,7 @@ export const Editor = forwardRef<HTMLElement, EditorProps>(({ markdown, setMarkd
 
         const line = lines[lineIndex];
         const trimmedLine = line.trim();
-        
+
         if (trimmedLine.startsWith(COMMENT_START) && trimmedLine.endsWith(COMMENT_END)) {
           // Uncomment line
           const leadingWhitespace = line.match(/^\s*/)?.[0] || '';
@@ -83,11 +82,11 @@ export const Editor = forwardRef<HTMLElement, EditorProps>(({ markdown, setMarkd
 
         newMarkdown = lines.join('\n');
         // Keep cursor at roughly the same place (simplification)
-        newSelectionStart = newSelectionEnd = start; 
+        newSelectionStart = newSelectionEnd = start;
       }
 
       setMarkdown(newMarkdown);
-      
+
       // We need to restore focus and selection after React re-renders
       setTimeout(() => {
         if (textareaRef.current) {
@@ -99,25 +98,25 @@ export const Editor = forwardRef<HTMLElement, EditorProps>(({ markdown, setMarkd
   };
 
   return (
-    <div 
-      ref={containerRef}
+    <div
       className={clsx(
         "h-full flex flex-col border-r border-gray-200 dark:border-gray-800 editor-pane bg-gray-50 dark:bg-gray-900",
         viewMode === 'edit' ? "w-full" : viewMode === 'split' ? "w-1/2" : "w-0 hidden"
       )}
     >
-      <div className="w-full max-w-3xl mx-auto h-full flex flex-col">
-        <textarea
-          ref={textareaRef}
-          className="w-full h-full resize-none p-8 outline-none bg-transparent font-mono text-sm leading-relaxed text-gray-800 dark:text-gray-200"
-          value={markdown}
-          onChange={(e) => setMarkdown(e.target.value)}
-          onKeyDown={handleKeyDown}
-          spellCheck={false}
-          placeholder="Start writing..."
-        />
-      </div>
-        </div>
-      );
-    });
-    
+      <textarea
+        ref={textareaRef}
+        className="w-full h-full resize-none py-8 outline-none bg-transparent font-mono text-sm leading-relaxed text-gray-800 dark:text-gray-200"
+        style={{
+          paddingLeft: viewMode === 'edit' ? 'max(2rem, calc(50% - 384px))' : '2rem',
+          paddingRight: viewMode === 'edit' ? 'max(2rem, calc(50% - 384px))' : '2rem',
+        }}
+        value={markdown}
+        onChange={(e) => setMarkdown(e.target.value)}
+        onKeyDown={handleKeyDown}
+        spellCheck={false}
+        placeholder="Start writing..."
+      />
+    </div>
+  );
+});

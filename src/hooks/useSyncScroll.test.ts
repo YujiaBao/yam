@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { useSyncScroll } from './useSyncScroll';
 
 describe('useSyncScroll hook', () => {
@@ -7,6 +7,8 @@ describe('useSyncScroll hook', () => {
   let previewElem: HTMLDivElement;
 
   beforeEach(() => {
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => { cb(0); return 0; });
+
     editorElem = document.createElement('div');
     previewElem = document.createElement('div');
 
@@ -15,6 +17,10 @@ describe('useSyncScroll hook', () => {
     Object.defineProperty(editorElem, 'clientHeight', { value: 500, configurable: true });
     Object.defineProperty(previewElem, 'scrollHeight', { value: 2000, configurable: true });
     Object.defineProperty(previewElem, 'clientHeight', { value: 500, configurable: true });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('scrolls the preview when the editor is scrolled', () => {

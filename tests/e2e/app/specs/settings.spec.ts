@@ -30,7 +30,6 @@ test.describe('Settings Workflow', () => {
     await editorPage.page.reload();
     await editorPage.waitForAppLoad();
 
-    await editorPage.toggleSidebar();
     await editorPage.openSettings();
     await expect(settingsPage.modal).toBeVisible();
 
@@ -42,10 +41,6 @@ test.describe('Settings Workflow', () => {
   });
 
   test('should switch themes and update (default) label', async () => {
-    // Open sidebar first
-    if (await editorPage.sidebar.isHidden()) {
-        await editorPage.toggleSidebar();
-    }
     await editorPage.openSettings();
     await expect(settingsPage.modal).toBeVisible();
 
@@ -61,17 +56,12 @@ test.describe('Settings Workflow', () => {
     await settingsPage.close();
   });
 
-  test('should cycle fonts', async () => {
+  test('should cycle fonts via toolbar', async () => {
     const initialFont = await settingsPage.getCurrentFontFamily();
-    
-    // Sidebar should already be open from previous test
-    if (await editorPage.sidebar.isHidden()) {
-        await editorPage.toggleSidebar();
-    }
 
-    const fontBtn = editorPage.page.locator('button', { hasText: 'Change Font' });
-    await fontBtn.click();
-    
+    // Click font cycle button in toolbar
+    await editorPage.page.locator('button[title^="Font:"]').click();
+
     const newFont = await settingsPage.getCurrentFontFamily();
     expect(newFont).not.toBe(initialFont);
   });

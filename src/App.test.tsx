@@ -1,12 +1,20 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from './App';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 
 // Mock electron
 Object.defineProperty(window, 'electron', {
   value: {
     onFileOpened: vi.fn(() => () => {}),
     exportPdf: vi.fn(),
+    setDirty: vi.fn(),
+    onMenuSave: vi.fn(() => () => {}),
+    onMenuSaveAs: vi.fn(() => () => {}),
+    onMenuSaveThenClose: vi.fn(() => () => {}),
+    onMenuSetViewMode: vi.fn(() => () => {}),
+    onMenuToggleSidebar: vi.fn(() => () => {}),
+    onMenuOpenSettings: vi.fn(() => () => {}),
+    onMenuExportPdf: vi.fn(() => () => {}),
   },
   configurable: true,
 });
@@ -15,40 +23,31 @@ window.matchMedia = vi.fn().mockImplementation(query => ({
   matches: false,
   media: query,
   onchange: null,
-  addListener: vi.fn(), // deprecated
-  removeListener: vi.fn(), // deprecated
+  addListener: vi.fn(),
+  removeListener: vi.fn(),
   addEventListener: vi.fn(),
   removeEventListener: vi.fn(),
   dispatchEvent: vi.fn(),
 }));
 
 describe('App', () => {
-  beforeEach(() => {
-    // LocalStorage or other mocks if needed
-  });
-
   afterEach(() => {
     vi.clearAllMocks();
   });
 
   it('renders the welcome message in preview and editor', async () => {
     render(<App />);
-    // Wait for fetch to complete
     expect(await screen.findByRole('heading', { name: /Welcome to Yam/i })).toBeInTheDocument();
     expect(screen.getByDisplayValue(/# Welcome to Yam/i)).toBeInTheDocument();
   });
 
-  it('renders the sidebar buttons', async () => {
+  it('renders the toolbar with view mode buttons', async () => {
     render(<App />);
-    // Wait for app to load
     await screen.findByRole('heading', { name: /Welcome to Yam/i });
-    
-    // Sidebar is hidden by default. Click toggle to show it.
-    const toggleBtn = screen.getByTitle('Show Sidebar');
-    fireEvent.click(toggleBtn);
 
-    expect(screen.getByText(/Open File/i)).toBeInTheDocument();
-    expect(screen.getByText(/Export PDF/i)).toBeInTheDocument();
-    expect(screen.getByText(/Change Font/i)).toBeInTheDocument();
+    expect(screen.getByTitle('Editor')).toBeInTheDocument();
+    expect(screen.getByTitle('Split')).toBeInTheDocument();
+    expect(screen.getByTitle('Preview')).toBeInTheDocument();
+    expect(screen.getByTitle('Settings')).toBeInTheDocument();
   });
 });

@@ -4,9 +4,7 @@ import { Locator, Page } from '@playwright/test';
 export class EditorPage extends BasePage {
   readonly editor: Locator;
   readonly preview: Locator;
-  readonly sidebar: Locator;
-  readonly collapseSidebarBtn: Locator;
-  readonly showSidebarBtn: Locator;
+  readonly toolbar: Locator;
   readonly settingsBtn: Locator;
 
   constructor(page: Page) {
@@ -14,10 +12,8 @@ export class EditorPage extends BasePage {
     // Selectors
     this.editor = page.locator('textarea').first();
     this.preview = page.locator('.markdown-body');
-    this.sidebar = page.locator('aside');
-    this.collapseSidebarBtn = page.locator('button[title="Collapse Sidebar"]');
-    this.showSidebarBtn = page.locator('button[title="Show Sidebar"]');
-    this.settingsBtn = page.locator('button').filter({ has: page.locator('svg.lucide-settings') });
+    this.toolbar = page.locator('button[title="Settings"]').locator('..');
+    this.settingsBtn = page.locator('button[title="Settings"]');
   }
 
   async typeMarkdown(text: string) {
@@ -26,14 +22,6 @@ export class EditorPage extends BasePage {
 
   async getPreviewText() {
     return this.preview.innerText();
-  }
-
-  async toggleSidebar() {
-    if (await this.sidebar.isVisible()) {
-      await this.collapseSidebarBtn.click();
-    } else {
-      await this.showSidebarBtn.click();
-    }
   }
 
   async openSettings() {

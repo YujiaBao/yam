@@ -30,9 +30,6 @@ test.describe('General Settings Workflow', () => {
   });
 
   test('should configure startup view modes and custom content in General tab', async () => {
-    if (await editorPage.sidebar.isHidden()) {
-      await editorPage.toggleSidebar();
-    }
     await editorPage.openSettings();
     await expect(settingsPage.modal).toBeVisible();
 

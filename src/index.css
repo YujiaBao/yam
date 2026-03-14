@@ -7,14 +7,59 @@
   body {
     @apply antialiased text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-900;
   }
-  
+
   .app-container {
     background-color: theme('colors.white');
   }
-  
+
   .dark .app-container {
     background-color: theme('colors.gray.900');
   }
+}
+
+/* Auto-hiding scrollbars: fade out after 3s of no scrolling */
+.editor-pane textarea,
+.preview-pane {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.3s;
+}
+
+.editor-pane textarea:hover,
+.editor-pane textarea.is-scrolling,
+.preview-pane:hover,
+.preview-pane.is-scrolling {
+  scrollbar-color: rgba(128, 128, 128, 0.4) transparent;
+}
+
+/* WebKit (Chrome/Safari/Electron) auto-hiding scrollbars */
+.editor-pane textarea::-webkit-scrollbar,
+.preview-pane::-webkit-scrollbar {
+  width: 8px;
+}
+
+.editor-pane textarea::-webkit-scrollbar-track,
+.preview-pane::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.editor-pane textarea::-webkit-scrollbar-thumb,
+.preview-pane::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.editor-pane textarea:hover::-webkit-scrollbar-thumb,
+.editor-pane textarea.is-scrolling::-webkit-scrollbar-thumb,
+.preview-pane:hover::-webkit-scrollbar-thumb,
+.preview-pane.is-scrolling::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.4);
+}
+
+.editor-pane textarea::-webkit-scrollbar-thumb:hover,
+.preview-pane::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.6);
 }
 
 /* GitHub Markdown CSS Overrides */
@@ -147,8 +192,8 @@
 }
 
 @media print {
-  /* Hide sidebar and drag region */
-  aside, .drag-region {
+  /* Hide toolbar and drag region */
+  .drag-region {
     display: none !important;
   }
 

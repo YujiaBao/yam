@@ -54,12 +54,18 @@ const mockProtocol = {
     handle: vi.fn(),
 }
 
+const mockMenu = {
+  buildFromTemplate: vi.fn(() => mockMenu),
+  setApplicationMenu: vi.fn(),
+};
+
 vi.mock('electron', () => ({
   app: mockApp,
   BrowserWindow: BrowserWindowMock,
   ipcMain: mockIpcMain,
   dialog: mockDialog,
   protocol: mockProtocol,
+  Menu: mockMenu,
   net: { fetch: vi.fn() },
 }));
 
