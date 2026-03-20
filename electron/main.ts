@@ -408,6 +408,11 @@ function buildAppMenu() {
             },
           },
         ]),
+        { type: 'separator' },
+        {
+          role: 'close',
+          // On macOS this gives us Cmd+W; on Windows/Linux it gives Ctrl+W
+        },
         ...(isMac ? [] : [{ type: 'separator' as const }, { role: 'quit' as const }]),
       ] as Electron.MenuItemConstructorOptions[],
     },
@@ -472,6 +477,7 @@ function buildAppMenu() {
       submenu: [
         { role: 'minimize' },
         { role: 'zoom' },
+        { role: 'togglefullscreen' },
         ...(isMac ? [
           { type: 'separator' as const },
           { role: 'front' as const },
